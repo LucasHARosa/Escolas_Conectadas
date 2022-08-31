@@ -1,7 +1,7 @@
 package programa;
 
 
-public class Chamado {
+public abstract class Chamado {
     protected int id;
     protected String data;
     protected boolean resolvido;
@@ -34,5 +34,7 @@ public class Chamado {
     public void setResolvido(boolean resolvido) {
         this.resolvido = resolvido;
     }
+    
+    abstract  void resolverChamado();
     
 }

@@ -1,8 +1,11 @@
 
 package programa;
 
+import java.io.Serializable;
 
-public class Usuario {
+
+public abstract class Usuario  implements Serializable{
+    private static final long serialVersionUID = 1L;
     private String login;
     private String senha;
     private String nome;

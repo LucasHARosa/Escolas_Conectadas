@@ -55,5 +55,7 @@ public class Internet extends Chamado{
         this.resolvido = resolvido;
     }
     
+    @Override
+    public void resolverChamado(){}
     
 }

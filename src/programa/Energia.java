@@ -44,4 +44,7 @@ public class Energia extends Chamado {
         this.resolvido = resolvido;
     }
     
+    @Override
+    public void resolverChamado(){}
+    
 }

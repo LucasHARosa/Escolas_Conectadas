@@ -53,13 +53,7 @@ public class Computador extends Chamado {
     public void setValorTotal(float valorTotal) {
         this.valorTotal = valorTotal;
     }
-
-    public boolean isResolvido() {
-        return resolvido;
-    }
-
-    public void setResolvido(boolean resolvido) {
-        this.resolvido = resolvido;
-    }
     
+    @Override
+    public void resolverChamado(){}
 }
