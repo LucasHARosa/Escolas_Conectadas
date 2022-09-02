@@ -1,8 +1,11 @@
 
 package programa;
 
+import java.io.Serializable;
 
-public class Escola {
+
+public class Escola implements Serializable{
+    private static final long serialVersionUID = 1L;
     private long codInep;
     private int numMatriculas;
     private int numComputador;
@@ -14,9 +17,10 @@ public class Escola {
     private float longitude;
     private boolean internet;
     private boolean energia;
-    private DiretorDaEscola diretor;
+    private DiretorDaEscola diretor = null;
+    private String nome;
 
-    public Escola(long codInep, int numMatriculas, int numComputador, String endereco, String uf, String municipio, long cep, float latitude, float longitude, boolean internet, boolean energia, DiretorDaEscola diretor) {
+    public Escola(long codInep, int numMatriculas, int numComputador, String endereco, String uf, String municipio, long cep, float latitude, float longitude, boolean internet, boolean energia, String nome) {
         this.codInep = codInep;
         this.numMatriculas = numMatriculas;
         this.numComputador = numComputador;
@@ -28,9 +32,8 @@ public class Escola {
         this.longitude = longitude;
         this.internet = internet;
         this.energia = energia;
-        this.diretor = diretor;
     }
-
+   
     public long getCodInep() {
         return codInep;
     }
@@ -125,6 +128,14 @@ public class Escola {
 
     public void setDiretor(DiretorDaEscola diretor) {
         this.diretor = diretor;
+    }
+    
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
     
 }

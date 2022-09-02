@@ -179,7 +179,7 @@ public class TelaCadastroEntidade extends javax.swing.JFrame {
                 campoNome.getText());
             try {
                 FileOutputStream fs = new FileOutputStream( 
-                        new File("src\\dados\\usuarios\\entidades\\" + entidade.getLogin() + ".txt" ).getAbsolutePath());
+                        new File("src\\dados\\usuarios\\entidades.txt" ).getAbsolutePath());
                 ObjectOutputStream o = new ObjectOutputStream(fs);
                 o.writeObject(entidade);
                 o.close();
@@ -187,7 +187,7 @@ public class TelaCadastroEntidade extends javax.swing.JFrame {
                 botaoVoltarActionPerformed(evt);
             }
             catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null,"Arquivo Não Encontrado","ERRO" ,JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Arquivo de Entidades Não Encontrado","ERRO" ,JOptionPane.ERROR_MESSAGE);
             } catch (IOException e) {
                JOptionPane.showMessageDialog(null,"Ocorreu um erro com a Stream","ERRO" ,JOptionPane.ERROR_MESSAGE);
             }

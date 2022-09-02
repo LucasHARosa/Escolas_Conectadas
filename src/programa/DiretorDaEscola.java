@@ -1,7 +1,10 @@
 package programa;
 
+import java.io.Serializable;
 
-public class DiretorDaEscola extends Usuario{
+
+public class DiretorDaEscola extends Usuario implements Serializable{
+    private static final long serialVersionUID = 1L;
     private long cpf;
     private String telefone;
     private Escola escola;

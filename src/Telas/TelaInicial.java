@@ -3,9 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Telas;
-
-import java.awt.CardLayout;
-
 /**
  *
  * @author Marcos Eduardo
@@ -149,7 +146,10 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_campoLoginActionPerformed
 
     private void botaoCadastrarDiretorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarDiretorActionPerformed
-        // TODO add your handling code here:
+        TelaCadastroDiretor telaCadastroDiretor = new  TelaCadastroDiretor(this);
+        telaCadastroDiretor.setLocationRelativeTo(null);
+        telaCadastroDiretor.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_botaoCadastrarDiretorActionPerformed
 
     /**
