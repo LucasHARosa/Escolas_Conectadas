@@ -4,13 +4,15 @@
  */
 package Telas;
 
+import java.awt.HeadlessException;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import programa.DiretorDaEscola;
 import programa.Escola;
+import programa.GerenciadorDeArquivos;
 
 /**
  *
@@ -18,25 +20,29 @@ import programa.Escola;
  */
 public class TelaCadastroDiretor extends javax.swing.JFrame {
     private JFrame paginaAnterior;
-    private final ArrayList<String> escolas = new ArrayList<String>();
+    private ArrayList<String> nomeEscolas = new ArrayList<>();
+    private ArrayList<Escola> escolas = new ArrayList<>();
+    private ArrayList<DiretorDaEscola> diretores = new ArrayList<>();
     /**
      * Creates new form NewJFrame
      */
     public TelaCadastroDiretor(JFrame paginaAnterior) {
         this.paginaAnterior = paginaAnterior;
-        Escola obj;
+        File f = new File("src\\dados\\escolas.txt");
+        GerenciadorDeArquivos<Escola> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
         try {
-            FileInputStream fi = new FileInputStream(new File("src\\dados\\escolas.txt").getAbsolutePath());
-            ObjectInputStream oi = new ObjectInputStream(fi);
-            while (fi.available() > 0) {                
-                obj = (Escola) oi.readObject();
-                if(obj.getDiretor() == null){
-                    escolas.add(obj.getNome());
+            escolas = gerenciadorDeArquivos.lerArquivo(f);
+            for (Escola escola : escolas) {
+                if (escola.getDiretor() == null) {
+                    nomeEscolas.add(escola.getNome());
                 }
             }
             initComponents();
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null,"Não foi possível carregar as escolas disponíveis","ERRO" ,JOptionPane.ERROR_MESSAGE);
+            paginaAnterior.setVisible(true);
+            this.setVisible(false);
+            this.dispose();
         }
     }
 
@@ -60,12 +66,13 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         botaoCadastro = new javax.swing.JButton();
         botaoVoltar = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        seletorEscola = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         campoTelefone = new javax.swing.JFormattedTextField();
         campoCpf = new javax.swing.JFormattedTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cadastrar Diretor");
 
         jLabel3.setText("Nome:");
 
@@ -91,10 +98,10 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(escolas.toArray()));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        seletorEscola.setModel(new javax.swing.DefaultComboBoxModel(nomeEscolas.toArray()));
+        seletorEscola.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                seletorEscolaActionPerformed(evt);
             }
         });
 
@@ -137,7 +144,7 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
                         .addGap(29, 29, 29)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(seletorEscola, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(botaoCadastro)
@@ -194,7 +201,7 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(jLabel1))
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(seletorEscola, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(botaoCadastro)
@@ -227,25 +234,59 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroActionPerformed
-         if (!campoCpf.getText().matches("[0-9]+") || campoCpf.getText().length() < 11) {
-             JOptionPane.showMessageDialog(null,"CPF inválido","ERRO" ,JOptionPane.ERROR_MESSAGE);
+        if(campoCpf.getText().isBlank() || 
+                campoTelefone.getText().isBlank() ||
+                campoLogin.getText().isBlank() || 
+                campoNome.getText().isBlank() ||
+                new String(campoSenha.getPassword()).isBlank()
+                ){ 
+            JOptionPane.showMessageDialog(null,"Por favor preencha todos os campos para o cadastro","AVISO" ,JOptionPane.WARNING_MESSAGE);
         }
         else{
-//            DiretorDaEscola diretor = new DiretorDaEscola();
-//            try {
-//                FileOutputStream fs = new FileOutputStream( 
-//                        new File("src\\dados\\usuarios\\diretores.txt").getAbsolutePath());
-//                ObjectOutputStream o = new ObjectOutputStream(fs);
-//                o.writeObject(diretor);
-//                o.close();
-//                fs.close();
-//                botaoVoltarActionPerformed(evt);
-//            }
-//            catch (FileNotFoundException e) {
-//                JOptionPane.showMessageDialog(null,"Arquivo de Diretores Não Encontrado","ERRO" ,JOptionPane.ERROR_MESSAGE);
-//            } catch (IOException e) {
-//               JOptionPane.showMessageDialog(null,"Ocorreu um erro com a Stream","ERRO" ,JOptionPane.ERROR_MESSAGE);
-//            }
+            try {
+                boolean diretorJaExiste = false;
+                int indice = 0;
+                File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt" );
+                File arquivoEscolas = new File("src\\dados\\escolas.txt");
+                GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivosDiretor = new GerenciadorDeArquivos<>();
+                GerenciadorDeArquivos<Escola> gerenciadorDeArquivosEscola = new  GerenciadorDeArquivos<>();
+                if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
+                    diretores = gerenciadorDeArquivosDiretor.lerArquivo(arquivoDiretores);
+                }
+                for (int i = 0; i < escolas.size(); i++) {
+                    if(seletorEscola.getSelectedItem().equals(escolas.get(i).getNome())){
+                        indice = i;
+                        break;
+                    }
+                }
+                DiretorDaEscola novoDiretor = new DiretorDaEscola(Long.parseLong(campoCpf.getText()),
+                        campoTelefone.getText(),
+                        campoLogin.getText(),
+                        new String(campoSenha.getPassword()),
+                        campoNome.getText(),
+                        escolas.get(indice));
+                
+                for (DiretorDaEscola diretor : diretores) {
+                    if(diretor.getLogin().equals(novoDiretor.getLogin())|| 
+                        diretor.getCpf() == novoDiretor.getCpf()){
+                        diretorJaExiste = true;
+                    }
+                }
+                if (!diretorJaExiste) {
+                    diretores.add(novoDiretor);
+                    escolas.get(indice).setDiretor(novoDiretor);
+                    gerenciadorDeArquivosDiretor.EscreverArquivo(diretores, arquivoDiretores);
+                    gerenciadorDeArquivosEscola.EscreverArquivo(escolas, arquivoEscolas);
+                    botaoVoltarActionPerformed(evt);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Este usuário já existe, por favor verifique seu login ou seu cpf","AVISO" ,JOptionPane.WARNING_MESSAGE);
+                }
+            }
+            catch (HeadlessException | IOException | ClassNotFoundException | NumberFormatException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro com o Arquivo de Entidades (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                botaoVoltarActionPerformed(evt);
+            } 
         }
     }//GEN-LAST:event_botaoCadastroActionPerformed
 
@@ -259,9 +300,9 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoTelefoneActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void seletorEscolaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seletorEscolaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_seletorEscolaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -272,7 +313,6 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
     private javax.swing.JTextField campoNome;
     private javax.swing.JPasswordField campoSenha;
     private javax.swing.JFormattedTextField campoTelefone;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -280,5 +320,6 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JComboBox<String> seletorEscola;
     // End of variables declaration//GEN-END:variables
 }

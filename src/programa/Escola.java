@@ -32,6 +32,7 @@ public class Escola implements Serializable{
         this.longitude = longitude;
         this.internet = internet;
         this.energia = energia;
+        this.nome = nome;
     }
    
     public long getCodInep() {

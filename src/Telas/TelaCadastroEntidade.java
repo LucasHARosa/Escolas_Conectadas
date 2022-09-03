@@ -4,14 +4,14 @@
  */
 package Telas;
 
+import java.awt.HeadlessException;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import programa.EntidadeDoGoverno;
+import programa.GerenciadorDeArquivos;
 
 /**
  *
@@ -19,6 +19,7 @@ import programa.EntidadeDoGoverno;
  */
 public class TelaCadastroEntidade extends javax.swing.JFrame {
     private JFrame paginaAnterior;
+    private ArrayList<EntidadeDoGoverno> entidades = new ArrayList<EntidadeDoGoverno>();
     /**
      * Creates new form NewJFrame
      */
@@ -36,11 +37,11 @@ public class TelaCadastroEntidade extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         campoNome = new javax.swing.JTextField();
         campoLogin = new javax.swing.JTextField();
         campoCargo = new javax.swing.JTextField();
-        campoIdentificacao = new javax.swing.JTextField();
         campoSenha = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -49,8 +50,12 @@ public class TelaCadastroEntidade extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         botaoCadastro = new javax.swing.JButton();
         botaoVoltar = new javax.swing.JButton();
+        campoIdentificacao = new javax.swing.JFormattedTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jFormattedTextField1.setText("jFormattedTextField1");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cadastrar Entidade do Governo");
 
         jLabel3.setText("Nome:");
 
@@ -76,38 +81,43 @@ public class TelaCadastroEntidade extends javax.swing.JFrame {
             }
         });
 
+        try {
+            campoIdentificacao.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#######")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(botaoCadastro)
                         .addGap(18, 18, 18)
                         .addComponent(botaoVoltar))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel7)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(campoIdentificacao))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addGap(18, 18, 18)
-                            .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel5))
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(campoSenha)
-                                .addComponent(campoLogin)))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel6)
-                            .addGap(18, 18, 18)
-                            .addComponent(campoCargo))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(campoSenha)
+                            .addComponent(campoLogin)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(campoCargo))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoIdentificacao)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -134,8 +144,8 @@ public class TelaCadastroEntidade extends javax.swing.JFrame {
                         .addComponent(campoCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(campoIdentificacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(jLabel7)
+                    .addComponent(campoIdentificacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoCadastro)
@@ -168,29 +178,48 @@ public class TelaCadastroEntidade extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroActionPerformed
-        if(!campoIdentificacao.getText().matches("[0-9]+")){ // Checar se a identificação é um número inteiro
-            JOptionPane.showMessageDialog(null,"Número de Identifcação Inválido","ERRO" ,JOptionPane.ERROR_MESSAGE);
-        } 
+        if(campoCargo.getText().isBlank() || 
+                campoIdentificacao.getText().isBlank() ||
+                campoLogin.getText().isBlank() || 
+                campoNome.getText().isBlank() ||
+                new String(campoSenha.getPassword()).isBlank()
+                ){ 
+            JOptionPane.showMessageDialog(null,"Por favor preencha todos os campos para o cadastro","AVISO" ,JOptionPane.WARNING_MESSAGE);
+        }
         else{
-            EntidadeDoGoverno entidade = new EntidadeDoGoverno(campoCargo.getText(),
+            try {
+                boolean entidadeJaExiste = false;
+                File f = new File("src\\dados\\usuarios\\entidades.txt" );
+                GerenciadorDeArquivos<EntidadeDoGoverno> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
+                if (!f.isDirectory() && f.exists()) {
+                    entidades = gerenciadorDeArquivos.lerArquivo(f);
+                }
+                
+                EntidadeDoGoverno novaEntidade = new EntidadeDoGoverno(campoCargo.getText(),
                 Integer.parseInt(campoIdentificacao.getText()),
                 campoLogin.getText(),
                 new String(campoSenha.getPassword()),
                 campoNome.getText());
-            try {
-                FileOutputStream fs = new FileOutputStream( 
-                        new File("src\\dados\\usuarios\\entidades.txt" ).getAbsolutePath());
-                ObjectOutputStream o = new ObjectOutputStream(fs);
-                o.writeObject(entidade);
-                o.close();
-                fs.close();
+                
+                for (EntidadeDoGoverno entidade : entidades) {
+                    if(entidade.getLogin().equals(novaEntidade.getLogin())|| 
+                        entidade.getIdentificacao() == novaEntidade.getIdentificacao()){
+                        entidadeJaExiste = true;
+                    }
+                }
+                if (!entidadeJaExiste) {
+                    entidades.add(novaEntidade);
+                    gerenciadorDeArquivos.EscreverArquivo(entidades, f);
+                    botaoVoltarActionPerformed(evt);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Este usuário já existe, por favor verifique seu login ou sua identificação","AVISO" ,JOptionPane.WARNING_MESSAGE);
+                }
+            }
+            catch (HeadlessException | IOException | ClassNotFoundException | NumberFormatException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro com o Arquivo de Entidades (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
                 botaoVoltarActionPerformed(evt);
-            }
-            catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null,"Arquivo de Entidades Não Encontrado","ERRO" ,JOptionPane.ERROR_MESSAGE);
-            } catch (IOException e) {
-               JOptionPane.showMessageDialog(null,"Ocorreu um erro com a Stream","ERRO" ,JOptionPane.ERROR_MESSAGE);
-            }
+            } 
         }
     }//GEN-LAST:event_botaoCadastroActionPerformed
 
@@ -205,10 +234,11 @@ public class TelaCadastroEntidade extends javax.swing.JFrame {
     private javax.swing.JButton botaoCadastro;
     private javax.swing.JButton botaoVoltar;
     private javax.swing.JTextField campoCargo;
-    private javax.swing.JTextField campoIdentificacao;
+    private javax.swing.JFormattedTextField campoIdentificacao;
     private javax.swing.JTextField campoLogin;
     private javax.swing.JTextField campoNome;
     private javax.swing.JPasswordField campoSenha;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

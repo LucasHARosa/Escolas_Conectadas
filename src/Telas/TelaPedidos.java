@@ -4,7 +4,6 @@
  */
 package Telas;
 
-import java.awt.List;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import programa.Pedido;
@@ -32,12 +31,12 @@ public class TelaPedidos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        chamado21 = new telas.Chamado2();
         jPanel1 = new javax.swing.JPanel();
         JScrollPane = new javax.swing.JScrollPane();
         tbPedidos = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Pedidos");
 
         tbPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -136,7 +135,6 @@ public class TelaPedidos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane JScrollPane;
-    private telas.Chamado2 chamado21;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTable tbPedidos;
     // End of variables declaration//GEN-END:variables

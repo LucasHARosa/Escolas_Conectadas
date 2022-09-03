@@ -9,10 +9,11 @@ public class DiretorDaEscola extends Usuario implements Serializable{
     private String telefone;
     private Escola escola;
 
-    public DiretorDaEscola(long cpf, String telefone, String login, String senha, String nome) {
+    public DiretorDaEscola(long cpf, String telefone, String login, String senha, String nome, Escola escola) {
         super(login, senha, nome);
         this.cpf = cpf;
         this.telefone = telefone;
+        this.escola = escola;
     }
 
     public Escola getEscola() {

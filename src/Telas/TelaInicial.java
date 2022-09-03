@@ -3,6 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Telas;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
+import javax.swing.JOptionPane;
+import programa.Escola;
+import programa.GerenciadorDeArquivos;
+
 /**
  *
  * @author Marcos Eduardo
@@ -13,6 +22,32 @@ public class TelaInicial extends javax.swing.JFrame {
      * Creates new form TelaInicial
      */
     public TelaInicial() {
+        File f = new File("src\\dados\\escolas.txt" );
+        if(!f.isDirectory() && !f.exists()){
+            try {
+                ArrayList<Escola> escolas = new ArrayList<>();
+                Random rand = new Random();
+                for (int i = 1; i <= 15; i++) {
+                    Escola escola = new Escola(i,
+                            rand.nextInt(30, 100),
+                            rand.nextInt(0, 100),
+                            "Bairo " + i,
+                            "DF",
+                            "Brasília",
+                            i,
+                            (float) i,
+                            (float) i,
+                            false,
+                            false,
+                            "Escola" + i);
+                    escolas.add(escola);
+                }
+                GerenciadorDeArquivos<Escola> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
+                gerenciadorDeArquivos.EscreverArquivo(escolas, f);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a Inicialização do Arquivo de Escolas (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+            }
+        }
         initComponents();
     }
 
@@ -34,7 +69,8 @@ public class TelaInicial extends javax.swing.JFrame {
         botaoCadastrarEntidade = new javax.swing.JButton();
         botaoCadastrarDiretor = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Página Inicial");
 
         jLabel2.setText("Login:");
 
