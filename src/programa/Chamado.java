@@ -5,11 +5,14 @@ public abstract class Chamado {
     protected int id;
     protected String data;
     protected boolean resolvido;
+    protected EntidadeDoGoverno entidadeDoGoverno;
 
-    public Chamado(int id, String data) {
+    public Chamado(int id, String data, EntidadeDoGoverno entidadeDoGoverno) {
         this.id = id;
         this.data = data;
+        this.entidadeDoGoverno = entidadeDoGoverno;
     }
+    
 
     public int getId() {
         return id;

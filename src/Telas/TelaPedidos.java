@@ -5,6 +5,7 @@
 package Telas;
 
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import programa.Pedido;
 
@@ -13,12 +14,15 @@ import programa.Pedido;
  * @author lucas
  */
 public class TelaPedidos extends javax.swing.JFrame {
+    private JFrame paginaAnterior;
     public ArrayList<Pedido> listaPedidos;
     /**
      * Creates new form TelaPedidos
      */
-    public TelaPedidos() {
+    public TelaPedidos(JFrame paginaAnterior) {
+        this.paginaAnterior = paginaAnterior;
         initComponents();
+        btChamado.setEnabled(false);
         listaPedidos = new ArrayList();
     }
 
@@ -34,22 +38,86 @@ public class TelaPedidos extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         JScrollPane = new javax.swing.JScrollPane();
         tbPedidos = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        txtDiretor = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtTipo = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtAceito = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtObservacao = new javax.swing.JTextField();
+        btChamado = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pedidos");
 
         tbPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Diretor", "Tipo", "Aceito", "Observação"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tbPedidos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbPedidosMouseClicked(evt);
+            }
+        });
         JScrollPane.setViewportView(tbPedidos);
+        if (tbPedidos.getColumnModel().getColumnCount() > 0) {
+            tbPedidos.getColumnModel().getColumn(0).setResizable(false);
+            tbPedidos.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tbPedidos.getColumnModel().getColumn(1).setResizable(false);
+            tbPedidos.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tbPedidos.getColumnModel().getColumn(2).setResizable(false);
+            tbPedidos.getColumnModel().getColumn(2).setPreferredWidth(10);
+            tbPedidos.getColumnModel().getColumn(3).setResizable(false);
+            tbPedidos.getColumnModel().getColumn(3).setPreferredWidth(50);
+        }
+
+        jLabel1.setText("Diretor");
+
+        txtDiretor.setEditable(false);
+
+        jLabel2.setText("Tipo");
+
+        txtTipo.setEditable(false);
+
+        jLabel3.setText("Aceito");
+
+        txtAceito.setEditable(false);
+
+        jLabel4.setText("Observação");
+
+        txtObservacao.setEditable(false);
+
+        btChamado.setText("Fazer Chamado");
+        btChamado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btChamadoActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel5.setText("Selecione o pedido para realizar o chamado:");
+
+        jButton1.setText("Voltar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -57,13 +125,66 @@ public class TelaPedidos extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(JScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtTipo))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtAceito))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtDiretor, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(99, 99, 99)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtObservacao, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btChamado)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton1))))
+                            .addComponent(jLabel5))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(138, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(txtDiretor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtObservacao))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(txtAceito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btChamado)
+                            .addComponent(jButton1))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(JScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -87,6 +208,36 @@ public class TelaPedidos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btChamadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btChamadoActionPerformed
+        String tipoChamado = txtTipo.getText();
+        if(tipoChamado.equals("Energia")){
+            
+        }
+        else if(tipoChamado.equals("Computador")){
+            
+        }
+        else if(tipoChamado.equals("Internet")){
+            
+        }
+    }//GEN-LAST:event_btChamadoActionPerformed
+
+    private void tbPedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPedidosMouseClicked
+        int i = tbPedidos.getSelectedRow();
+        
+        if(i>=0 && i<listaPedidos.size()){
+            Pedido peselec = listaPedidos.get(i);
+            txtDiretor.setText(peselec.getDiretorDaEscola().getNome());
+            txtTipo.setText(peselec.getTipo());
+            txtAceito.setText(String.valueOf(peselec.isApto()));
+            txtObservacao.setText(peselec.getObs());
+        }
+        btChamado.setEnabled(true);
+    }//GEN-LAST:event_tbPedidosMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
     public void carregarTabelaPedidos(){
         DefaultTableModel modelo = new DefaultTableModel(new Object[]{"Diretor","Tipo de pedido","Aceito","Observação"},0);
         for(int i=0;i<listaPedidos.size();i++){
@@ -98,44 +249,20 @@ public class TelaPedidos extends javax.swing.JFrame {
         }
         tbPedidos.setModel(modelo);
     }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaPedidos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaPedidos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaPedidos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaPedidos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaPedidos().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane JScrollPane;
+    private javax.swing.JButton btChamado;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTable tbPedidos;
+    private javax.swing.JTextField txtAceito;
+    private javax.swing.JTextField txtDiretor;
+    private javax.swing.JTextField txtObservacao;
+    private javax.swing.JTextField txtTipo;
     // End of variables declaration//GEN-END:variables
 }

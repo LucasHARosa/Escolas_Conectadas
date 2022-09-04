@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package programa;
 
 /**
@@ -14,13 +10,15 @@ public class Computador extends Chamado {
     private String modelo;
     private float valorTotal;
 
-    public Computador(String empresa, int quantComputador, String modelo, float valorTotal, int id, String data) {
-        super(id, data);
+    public Computador(String empresa, int quantComputador, String modelo, float valorTotal, int id, String data, EntidadeDoGoverno entidadeDoGoverno) {
+        super(id, data, entidadeDoGoverno);
         this.empresa = empresa;
         this.quantComputador = quantComputador;
         this.modelo = modelo;
         this.valorTotal = valorTotal;
     }
+
+    
 
     public String getEmpresa() {
         return empresa;
