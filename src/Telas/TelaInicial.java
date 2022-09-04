@@ -8,22 +8,35 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import programa.DiretorDaEscola;
+import programa.EntidadeDoGoverno;
 import programa.Escola;
 import programa.GerenciadorDeArquivos;
+import programa.Usuario;
 
 /**
  *
  * @author Marcos Eduardo
  */
 public class TelaInicial extends javax.swing.JFrame {
+       private ArrayList<EntidadeDoGoverno> entidadesCadastradas = new ArrayList<>();
 
+    public void setEntidadesCadastradas(ArrayList<EntidadeDoGoverno> entidadesCadastradas) {
+        this.entidadesCadastradas = entidadesCadastradas;
+    }
+
+    public void setDiretoresCadastrados(ArrayList<DiretorDaEscola> diretoresCadastrados) {
+        this.diretoresCadastrados = diretoresCadastrados;
+    }
+       private ArrayList<DiretorDaEscola> diretoresCadastrados  = new ArrayList<>();
     /**
      * Creates new form TelaInicial
      */
     public TelaInicial() {
         File f = new File("src\\dados\\escolas.txt" );
-        if(!f.isDirectory() && !f.exists()){
+        if(!f.isDirectory() && !f.exists()){ // Inicialização do Arquivo de Escolas caso não exista
             try {
                 ArrayList<Escola> escolas = new ArrayList<>();
                 Random rand = new Random();
@@ -46,6 +59,22 @@ public class TelaInicial extends javax.swing.JFrame {
                 gerenciadorDeArquivos.EscreverArquivo(escolas, f);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a Inicialização do Arquivo de Escolas (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                this.dispose();
+            }
+            try {
+                File arquivoEntidades = new File("src\\dados\\usuarios\\entidades.txt");
+                File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
+                GerenciadorDeArquivos<EntidadeDoGoverno> gerenciadorDeArquivosEntidades = new GerenciadorDeArquivos<>();
+                GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivosDiretores = new GerenciadorDeArquivos<>();
+                if (!arquivoEntidades.isDirectory() && arquivoEntidades.exists()) {
+                    entidadesCadastradas = gerenciadorDeArquivosEntidades.lerArquivo(arquivoEntidades);
+                }
+                if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
+                   diretoresCadastrados = gerenciadorDeArquivosDiretores.lerArquivo(arquivoDiretores); 
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivos Usuários (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                this.dispose();
             }
         }
         initComponents();
@@ -174,7 +203,43 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoCadastrarEntidadeActionPerformed
 
     private void botaoEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEntrarActionPerformed
-        // TODO add your handling code here:
+        boolean encontrouUsuario = false;
+        JFrame proximaPagina = null;
+        if (campoLogin.getText().isBlank() ||  new String(campoSenha.getPassword()).isBlank()) {
+            JOptionPane.showMessageDialog(null,"Por favor preencha todos os campos para entrar","AVISO" ,JOptionPane.WARNING_MESSAGE);
+        }
+        else{
+            for (EntidadeDoGoverno entidade: entidadesCadastradas) {
+                if (entidade.getLogin().equals(campoLogin.getText())) {
+                    encontrouUsuario = true;
+                    if (entidade.getSenha().equals(new String(campoSenha.getPassword()))) {
+                        proximaPagina = new TelaEntidade(this);
+                    }
+                }
+            }
+            if (!encontrouUsuario) {
+                for (DiretorDaEscola diretor : diretoresCadastrados) {
+                    if (diretor.getLogin().equals(campoLogin.getText())) {
+                        encontrouUsuario = true;
+                        if (diretor.getSenha().equals(new String(campoSenha.getPassword()))) {
+                        }
+                    }
+                }
+            }
+            if (encontrouUsuario) {
+                if (proximaPagina != null) {
+                    proximaPagina.setLocationRelativeTo(null);
+                    proximaPagina.setVisible(true);
+                    this.setVisible(false);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Senha Incorreta","AVISO" ,JOptionPane.WARNING_MESSAGE);
+                }
+            }
+            else{
+               JOptionPane.showMessageDialog(null,"Usuário Não Cadastrado","AVISO" ,JOptionPane.WARNING_MESSAGE); 
+            }
+        }
     }//GEN-LAST:event_botaoEntrarActionPerformed
 
     private void campoLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoLoginActionPerformed
@@ -187,7 +252,7 @@ public class TelaInicial extends javax.swing.JFrame {
         telaCadastroDiretor.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_botaoCadastrarDiretorActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */

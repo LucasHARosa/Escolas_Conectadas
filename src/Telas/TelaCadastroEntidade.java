@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import programa.DiretorDaEscola;
 import programa.EntidadeDoGoverno;
 import programa.GerenciadorDeArquivos;
 
@@ -20,6 +21,7 @@ import programa.GerenciadorDeArquivos;
 public class TelaCadastroEntidade extends javax.swing.JFrame {
     private JFrame paginaAnterior;
     private ArrayList<EntidadeDoGoverno> entidades = new ArrayList<EntidadeDoGoverno>();
+    private ArrayList<DiretorDaEscola> diretores = new ArrayList<>();
     /**
      * Creates new form NewJFrame
      */
@@ -188,13 +190,17 @@ public class TelaCadastroEntidade extends javax.swing.JFrame {
         }
         else{
             try {
-                boolean entidadeJaExiste = false;
-                File f = new File("src\\dados\\usuarios\\entidades.txt" );
-                GerenciadorDeArquivos<EntidadeDoGoverno> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
-                if (!f.isDirectory() && f.exists()) {
-                    entidades = gerenciadorDeArquivos.lerArquivo(f);
+                boolean loginJaExiste = false;
+                File arquivoEntidades = new File("src\\dados\\usuarios\\entidades.txt" );
+                File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
+                GerenciadorDeArquivos<EntidadeDoGoverno> gerenciadorDeArquivosEntidades = new GerenciadorDeArquivos<>();
+                GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivosDiretor = new GerenciadorDeArquivos<>();
+                if (!arquivoEntidades.isDirectory() && arquivoEntidades.exists()) {
+                    entidades = gerenciadorDeArquivosEntidades.lerArquivo(arquivoEntidades);
                 }
-                
+                if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
+                    diretores = gerenciadorDeArquivosDiretor.lerArquivo(arquivoDiretores);
+                }
                 EntidadeDoGoverno novaEntidade = new EntidadeDoGoverno(campoCargo.getText(),
                 Integer.parseInt(campoIdentificacao.getText()),
                 campoLogin.getText(),
@@ -204,12 +210,18 @@ public class TelaCadastroEntidade extends javax.swing.JFrame {
                 for (EntidadeDoGoverno entidade : entidades) {
                     if(entidade.getLogin().equals(novaEntidade.getLogin())|| 
                         entidade.getIdentificacao() == novaEntidade.getIdentificacao()){
-                        entidadeJaExiste = true;
+                        loginJaExiste = true;
                     }
                 }
-                if (!entidadeJaExiste) {
+                for (DiretorDaEscola diretor : diretores) {
+                     if(diretor.getLogin().equals(novaEntidade.getLogin())){
+                        loginJaExiste = true;
+                    }
+                }
+                if (!loginJaExiste) {
                     entidades.add(novaEntidade);
-                    gerenciadorDeArquivos.EscreverArquivo(entidades, f);
+                    gerenciadorDeArquivosEntidades.EscreverArquivo(entidades, arquivoEntidades);
+                    ((TelaInicial) paginaAnterior).setEntidadesCadastradas(entidades);
                     botaoVoltarActionPerformed(evt);
                 }
                 else{

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import programa.DiretorDaEscola;
+import programa.EntidadeDoGoverno;
 import programa.Escola;
 import programa.GerenciadorDeArquivos;
 
@@ -23,6 +24,7 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
     private ArrayList<String> nomeEscolas = new ArrayList<>();
     private ArrayList<Escola> escolas = new ArrayList<>();
     private ArrayList<DiretorDaEscola> diretores = new ArrayList<>();
+    private ArrayList<EntidadeDoGoverno> entidades = new ArrayList<>();
     /**
      * Creates new form NewJFrame
      */
@@ -244,14 +246,19 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
         }
         else{
             try {
-                boolean diretorJaExiste = false;
+                boolean loginJaExiste = false;
                 int indice = 0;
-                File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt" );
+                File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
                 File arquivoEscolas = new File("src\\dados\\escolas.txt");
+                File arquivoEntidades = new File("src\\dados\\usuarios\\entidades.txt");
                 GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivosDiretor = new GerenciadorDeArquivos<>();
                 GerenciadorDeArquivos<Escola> gerenciadorDeArquivosEscola = new  GerenciadorDeArquivos<>();
+                GerenciadorDeArquivos<EntidadeDoGoverno> gerenciadorDeArquivosEntidades = new GerenciadorDeArquivos<>();
                 if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
                     diretores = gerenciadorDeArquivosDiretor.lerArquivo(arquivoDiretores);
+                }
+                if (!arquivoEntidades.isDirectory() && arquivoEntidades.exists()) {
+                    entidades = gerenciadorDeArquivosEntidades.lerArquivo(arquivoEntidades);
                 }
                 for (int i = 0; i < escolas.size(); i++) {
                     if(seletorEscola.getSelectedItem().equals(escolas.get(i).getNome())){
@@ -269,14 +276,20 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
                 for (DiretorDaEscola diretor : diretores) {
                     if(diretor.getLogin().equals(novoDiretor.getLogin())|| 
                         diretor.getCpf() == novoDiretor.getCpf()){
-                        diretorJaExiste = true;
+                        loginJaExiste = true;
                     }
                 }
-                if (!diretorJaExiste) {
+                for (EntidadeDoGoverno entidade : entidades) {
+                    if(entidade.getLogin().equals(novoDiretor.getLogin())){
+                        loginJaExiste = true;
+                    }
+                }
+                if (!loginJaExiste) {
                     diretores.add(novoDiretor);
                     escolas.get(indice).setDiretor(novoDiretor);
                     gerenciadorDeArquivosDiretor.EscreverArquivo(diretores, arquivoDiretores);
                     gerenciadorDeArquivosEscola.EscreverArquivo(escolas, arquivoEscolas);
+                    ((TelaInicial) paginaAnterior).setDiretoresCadastrados(diretores);
                     botaoVoltarActionPerformed(evt);
                 }
                 else{
