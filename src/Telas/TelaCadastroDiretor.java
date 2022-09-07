@@ -75,6 +75,7 @@ public class TelaCadastroDiretor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Diretor");
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Imagens/brasil.png")).getImage());
 
         jLabel3.setText("Nome:");
 

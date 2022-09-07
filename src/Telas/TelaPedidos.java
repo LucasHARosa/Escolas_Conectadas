@@ -52,6 +52,7 @@ public class TelaPedidos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pedidos");
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Imagens/brasil.png")).getImage());
 
         tbPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
