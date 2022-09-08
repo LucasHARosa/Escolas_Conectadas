@@ -14,7 +14,6 @@ import programa.DiretorDaEscola;
 import programa.EntidadeDoGoverno;
 import programa.Escola;
 import programa.GerenciadorDeArquivos;
-import programa.Usuario;
 
 /**
  *
@@ -61,7 +60,8 @@ public class TelaInicial extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a Inicialização do Arquivo de Escolas (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
                 this.dispose();
             }
-            try {
+        }
+        try {
                 File arquivoEntidades = new File("src\\dados\\usuarios\\entidades.txt");
                 File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
                 GerenciadorDeArquivos<EntidadeDoGoverno> gerenciadorDeArquivosEntidades = new GerenciadorDeArquivos<>();
@@ -76,7 +76,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivos Usuários (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
                 this.dispose();
             }
-        }
+        
         initComponents();
     }
 
@@ -257,6 +257,7 @@ public class TelaInicial extends javax.swing.JFrame {
                     if (diretor.getLogin().equals(campoLogin.getText())) {
                         encontrouUsuario = true;
                         if (diretor.getSenha().equals(new String(campoSenha.getPassword()))) {
+                            proximaPagina = new TelaDiretor(this, diretor);
                         }
                     }
                 }

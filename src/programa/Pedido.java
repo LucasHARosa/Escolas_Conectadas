@@ -4,16 +4,19 @@
  */
 package programa;
 
+import java.io.Serializable;
 
-public class Pedido {
+
+public class Pedido implements Serializable{
+    private static final long serialVersionUID = 1L;
     private String tipo;
     private boolean apto;
     private String obs;
     private DiretorDaEscola diretorDaEscola;
 
-    public Pedido(String tipo, boolean apto, DiretorDaEscola diretorDaEscola) {
+    public Pedido(String tipo, DiretorDaEscola diretorDaEscola, String obs) {
         this.tipo = tipo;
-        this.apto = apto;
+        this.obs = obs;
         this.diretorDaEscola = diretorDaEscola;
     }
     

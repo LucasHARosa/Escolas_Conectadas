@@ -1,6 +1,6 @@
-
 package programa;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 
@@ -20,24 +20,23 @@ public abstract class Usuario  implements Serializable{
         return login;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getSenha() {
         return senha;
     }
-
-    public void setSenha(String senha) {
+    
+     public void setSenha(String senha) {
         this.senha = senha;
     }
 
     public String getNome() {
         return nome;
     }
-
+    
     public void setNome(String nome) {
         this.nome = nome;
     }
     
+    abstract public void mudarNome(String nome) throws IOException, ClassNotFoundException;
+    
+    abstract public void mudarSenha(String senha) throws IOException, ClassNotFoundException; 
 }
