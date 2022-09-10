@@ -10,15 +10,13 @@ public class Computador extends Chamado {
     private String modelo;
     private float valorTotal;
 
-    public Computador(String empresa, int quantComputador, String modelo, float valorTotal, int id, String data, EntidadeDoGoverno entidadeDoGoverno) {
-        super(id, data, entidadeDoGoverno);
+    public Computador(String empresa, int quantComputador, String modelo, float valorTotal, int id, String data, Escola escola) {
+        super(id, data, escola);
         this.empresa = empresa;
         this.quantComputador = quantComputador;
         this.modelo = modelo;
         this.valorTotal = valorTotal;
     }
-
-    
 
     public String getEmpresa() {
         return empresa;

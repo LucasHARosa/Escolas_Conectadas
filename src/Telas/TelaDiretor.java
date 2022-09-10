@@ -105,9 +105,9 @@ public class TelaDiretor extends javax.swing.JFrame {
                 .addComponent(botaoPedido)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botaoDetalhe)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(botaoNome)
                 .addGap(18, 18, 18)
+                .addComponent(botaoNome)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botaoSenha)
                 .addContainerGap(28, Short.MAX_VALUE))
         );

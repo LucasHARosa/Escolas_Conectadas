@@ -14,6 +14,7 @@ import programa.DiretorDaEscola;
 import programa.EntidadeDoGoverno;
 import programa.Escola;
 import programa.GerenciadorDeArquivos;
+import programa.Pedido;
 
 /**
  *
@@ -61,6 +62,19 @@ public class TelaInicial extends javax.swing.JFrame {
                 this.dispose();
             }
         }
+        File arquivoPedidos = new File("src\\dados\\usuarios\\pedidos.txt");
+        if(!arquivoPedidos.isDirectory() && !arquivoPedidos.exists()){
+            JOptionPane.showMessageDialog(null,"criando do zero" ,"mensagem" ,JOptionPane.PLAIN_MESSAGE);
+            try{
+                ArrayList<Pedido> listaPedidos = new ArrayList<>();
+                GerenciadorDeArquivos<Pedido> gerenciadorDeArquivosPedidos = new GerenciadorDeArquivos<>();
+                gerenciadorDeArquivosPedidos.EscreverArquivo(listaPedidos, arquivoPedidos);
+            }catch (IOException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a Inicialização do Arquivo de pedidos (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                this.dispose();
+            }
+            
+        }
         try {
                 File arquivoEntidades = new File("src\\dados\\usuarios\\entidades.txt");
                 File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
@@ -72,6 +86,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
                    diretoresCadastrados = gerenciadorDeArquivosDiretores.lerArquivo(arquivoDiretores); 
                 }
+                
             } catch (IOException | ClassNotFoundException e) {
                 JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivos Usuários (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
                 this.dispose();
@@ -248,7 +263,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 if (entidade.getLogin().equals(campoLogin.getText())) {
                     encontrouUsuario = true;
                     if (entidade.getSenha().equals(new String(campoSenha.getPassword()))) {
-                        proximaPagina = new TelaEntidade(this);
+                        proximaPagina = new TelaEntidade(this,entidade);
                     }
                 }
             }
@@ -289,9 +304,7 @@ public class TelaInicial extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_botaoCadastrarDiretorActionPerformed
     
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -87,7 +87,7 @@ public class DiretorDaEscola extends Usuario implements Serializable{
     }
     
     public ArrayList<Pedido> getPedidos() {
-        return pedidos;
+        return this.pedidos;
     }
     
     public boolean fazerPedido(Pedido novoPedido) throws IOException, ClassNotFoundException{

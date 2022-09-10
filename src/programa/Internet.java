@@ -7,15 +7,14 @@ public class Internet extends Chamado{
     private float velocidade;
     private float valoMensal;
 
-    public Internet(String operadora, int quantidadePontos, float velocidade, float valoMensal, int id, String data, EntidadeDoGoverno entidadeDoGoverno) {
-        super(id, data, entidadeDoGoverno);
+    public Internet(String operadora, int quantidadePontos, float velocidade, float valoMensal, int id, String data, Escola escola) {
+        super(id, data, escola);
         this.operadora = operadora;
         this.quantidadePontos = quantidadePontos;
         this.velocidade = velocidade;
         this.valoMensal = valoMensal;
     }
 
-   
 
     public String getOperadora() {
         return operadora;

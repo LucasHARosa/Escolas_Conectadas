@@ -5,14 +5,14 @@ public class Energia extends Chamado {
     private String tipo;
     private float valorMensal;
 
-    public Energia(String prestadora, String tipo, float valorMensal, int id, String data, EntidadeDoGoverno entidadeDoGoverno) {
-        super(id, data, entidadeDoGoverno);
+    public Energia(String prestadora, String tipo, float valorMensal, int id, String data, Escola escola) {
+        super(id, data, escola);
         this.prestadora = prestadora;
         this.tipo = tipo;
         this.valorMensal = valorMensal;
     }
 
-   
+    
 
     public String getPrestadora() {
         return prestadora;

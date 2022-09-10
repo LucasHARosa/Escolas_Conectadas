@@ -1,18 +1,18 @@
 package Telas;
 
 import javax.swing.JFrame;
+import programa.EntidadeDoGoverno;
 
-/**
- *
- * @author lucas
- */
+
 public class TelaEntidade extends javax.swing.JFrame {
     private JFrame paginaAnterior;
+    private EntidadeDoGoverno entidade;
     /**
      * Creates new form TelaEntidade
      */
-    public TelaEntidade(JFrame paginaAnterior) {
+    public TelaEntidade(JFrame paginaAnterior,EntidadeDoGoverno entidade) {
         this.paginaAnterior = paginaAnterior;
+        this.entidade = entidade;
         initComponents();
         setarTexto();
     }
@@ -147,28 +147,28 @@ public class TelaEntidade extends javax.swing.JFrame {
         
     }
     private void btEnergiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnergiaActionPerformed
-        TelaEnergia telaenergia = new TelaEnergia(this);
+        TelaEnergia telaenergia = new TelaEnergia(this,entidade);
         telaenergia.setLocationRelativeTo(null);
         telaenergia.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btEnergiaActionPerformed
 
     private void btPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPedidosActionPerformed
-        TelaPedidos telapedidos = new TelaPedidos(this);
+        TelaPedidos telapedidos = new TelaPedidos(this,entidade);
         telapedidos.setLocationRelativeTo(null);
         telapedidos.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btPedidosActionPerformed
 
     private void btComputadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btComputadoresActionPerformed
-        TelaComputador telacomputador = new TelaComputador(this);
+        TelaComputador telacomputador = new TelaComputador(this,entidade);
         telacomputador.setLocationRelativeTo(null);
         telacomputador.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btComputadoresActionPerformed
 
     private void btInternetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInternetActionPerformed
-        TelaInternet telainternet = new TelaInternet(this);
+        TelaInternet telainternet = new TelaInternet(this,entidade);
         telainternet.setLocationRelativeTo(null);
         telainternet.setVisible(true);
         this.setVisible(false);
