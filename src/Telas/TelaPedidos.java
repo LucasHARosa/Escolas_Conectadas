@@ -327,21 +327,23 @@ public class TelaPedidos extends javax.swing.JFrame {
             diretores = gerenciadorDeArquivos.lerArquivo(new File("src\\dados\\usuarios\\diretores.txt"));
         } catch (IOException | ClassNotFoundException ex) {
              JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante os Pedidos (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-        }
-        DefaultTableModel modelo = new DefaultTableModel(new Object[]{"Diretor","Escola","Tipo","Observação"},0);
+        } 
         //listaDiretores = carregarDiretores();
         ArrayList<Pedido> pedidos =new ArrayList<>();
         for(DiretorDaEscola dir : diretores){
             pedidos.addAll(dir.getPedidos());
         }
+        Object[] colunas = new Object[]{"Diretor","Escola","Tipo","Observação"};
+        Object[][] dadosPedidos = new Object[pedidos.size()][colunas.length]; 
         for(int i=0;i<pedidos.size();i++){    
                 Object linha[]=new Object[]{pedidos.get(i).getDiretorDaEscola().getNome(),
                                             pedidos.get(i).getDiretorDaEscola().getEscola().getNome(),
                                             pedidos.get(i).getTipo(),
                                             pedidos.get(i).getObs()};
-                    modelo.addRow(linha);  
+                dadosPedidos[i] = linha;  
                    
         }
+        DefaultTableModel modelo = new DefaultTableModel(dadosPedidos,colunas);
         tbPedidos.setModel(modelo);
     }
     public ArrayList<DiretorDaEscola> carregarDiretores(){
