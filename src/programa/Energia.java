@@ -1,6 +1,10 @@
 package programa;
 
-public class Energia extends Chamado {
+import java.io.Serializable;
+import javax.swing.JOptionPane;
+
+public class Energia extends Chamado implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String prestadora;
     private String tipo;
     private float valorMensal;
@@ -12,7 +16,6 @@ public class Energia extends Chamado {
         this.valorMensal = valorMensal;
     }
 
-    
 
     public String getPrestadora() {
         return prestadora;
@@ -38,15 +41,20 @@ public class Energia extends Chamado {
         this.valorMensal = valorMensal;
     }
 
-    public boolean isResolvido() {
-        return resolvido;
-    }
-
-    public void setResolvido(boolean resolvido) {
-        this.resolvido = resolvido;
-    }
     
+   
     @Override
-    public void resolverChamado(){}
+    public int resolverChamado(){
+        if(this.getEscola().isEnergia()==false){
+            setResolvido(true);
+            JOptionPane.showMessageDialog(null,"O chamado foi resolvido e está em ordem","Mensagem",JOptionPane.PLAIN_MESSAGE);
+            this.getEscola().setEnergia(true);
+        }   
+        else{
+            JOptionPane.showMessageDialog(null,"O chamado não poderá ser concluído a escola já tem energia","Mensagem",JOptionPane.PLAIN_MESSAGE);
+        }
+       
+        return 0;
+    }
     
 }

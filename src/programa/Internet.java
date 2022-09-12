@@ -1,5 +1,7 @@
 package programa;
 
+import javax.swing.JOptionPane;
+
 
 public class Internet extends Chamado{
     private String operadora;
@@ -14,6 +16,8 @@ public class Internet extends Chamado{
         this.velocidade = velocidade;
         this.valoMensal = valoMensal;
     }
+
+    
 
 
     public String getOperadora() {
@@ -48,15 +52,24 @@ public class Internet extends Chamado{
         this.valoMensal = valoMensal;
     }
 
-    public boolean isResolvido() {
-        return resolvido;
-    }
-
-    public void setResolvido(boolean resolvido) {
-        this.resolvido = resolvido;
-    }
     
+    
+   
     @Override
-    public void resolverChamado(){}
+    public int resolverChamado(){
+        int opcao=0;
+        if(this.getEscola().isInternet()==false){
+            setResolvido(true);
+            if(this.getEscola().isEnergia()==false){
+                opcao=10;    
+            }
+            JOptionPane.showMessageDialog(null,"O chamado foi resolvido e está em ordem","Mensagem",JOptionPane.PLAIN_MESSAGE);
+            this.getEscola().setInternet(true);
+        }   
+        else{
+            JOptionPane.showMessageDialog(null,"O chamado não poderá ser concluído a escola já tem Internet","Mensagem",JOptionPane.PLAIN_MESSAGE);
+        }
+        return opcao;
+    }
     
 }

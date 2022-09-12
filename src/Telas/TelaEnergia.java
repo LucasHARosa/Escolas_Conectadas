@@ -1,11 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Telas;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import programa.DiretorDaEscola;
+import programa.Energia;
 import programa.EntidadeDoGoverno;
+import programa.GerenciadorDeArquivos;
+import programa.Pedido;
 
 /**
  *
@@ -14,13 +21,25 @@ import programa.EntidadeDoGoverno;
 public class TelaEnergia extends javax.swing.JFrame {
     private JFrame paginaAnterior;
     private EntidadeDoGoverno entidade;
+    private ArrayList<DiretorDaEscola> listaDiretores;
+    private ArrayList<EntidadeDoGoverno> listaEntidade;
+    private ArrayList<Energia> listaEnergia;
+    private Energia energia;
+    private String e = "Energia";
+    private int indice;
+    private int opcao;
     /**
      * Creates new form TelaEnergia
      */
-    public TelaEnergia(JFrame paginaAnterior,EntidadeDoGoverno entidade) {
+    public TelaEnergia(JFrame paginaAnterior,EntidadeDoGoverno entidade) throws IOException, ClassNotFoundException {
         this.paginaAnterior = paginaAnterior;
         this.entidade = entidade;
+        listaDiretores = carregarDiretores();
+        
+        
         initComponents();
+        carregaTabela();
+       
     }
 
     /**
@@ -32,43 +51,16 @@ public class TelaEnergia extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbEnergia = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        txtNumero = new javax.swing.JTextField();
         btResolver = new javax.swing.JButton();
         btVoltar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbChamados = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Chamados de Energia");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Imagens/brasil.png")).getImage());
-
-        tbEnergia.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Número", "Diretor", "Escola", "Resolvido"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tbEnergia);
-
-        jLabel1.setText("Número");
-
-        txtNumero.setEditable(false);
 
         btResolver.setText("Resolver");
         btResolver.addActionListener(new java.awt.event.ActionListener() {
@@ -87,7 +79,14 @@ public class TelaEnergia extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/energia-solargrande.png"))); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("Chamdos de energia");
+        jLabel3.setText("Chamado de energia");
+
+        tbChamados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbChamadosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbChamados);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,53 +94,103 @@ public class TelaEnergia extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtNumero))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btResolver)
-                        .addGap(18, 18, 18)
-                        .addComponent(btVoltar)))
+                .addComponent(btResolver)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btVoltar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addGap(57, 57, 57))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(58, 58, 58))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(115, 115, 115))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btResolver)
                             .addComponent(btVoltar)))
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btResolverActionPerformed
-        // TODO add your handling code here:
+        if(energia.isResolvido()==false){
+            opcao = energia.resolverChamado();
+            try {
+                listaEnergia = carregarEnergia();
+            } catch (IOException ex) {
+                Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for(int i =0;i<listaEnergia.size();i++){
+                Energia e = listaEnergia.get(i);
+                if(energia.getEscola().getNome().equals(e.getEscola().getNome())){
+                    listaEnergia.set(i, energia);
+                    atualizarEnergia(listaEnergia);
+                }
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Esse chamado já foi resolvido, vá a página de pedidos e faça um novo chamado","Mensagem",JOptionPane.PLAIN_MESSAGE);
+        }
+        if(energia.isResolvido()==true){
+            listaDiretores = carregarDiretores();
+            for(int i =0;i<listaDiretores.size();i++){
+                DiretorDaEscola diretor = listaDiretores.get(i);
+                if(energia.getEscola().getDiretor().getCpf() == diretor.getCpf() && energia.getEscola().getDiretor().getNome().equals(diretor.getNome())){
+                    for(int j= 0;j<diretor.getPedidos().size();j++){
+                        if(e.equals(diretor.getPedidos().get(j).getTipo())){
+                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Chamado completo");
+                            //JOptionPane.showMessageDialog(null,"pedido atualizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
+                        }
+                    }
+                }
+            }
+           
+            
+        }
+        else{
+            listaDiretores = carregarDiretores();
+            for(int i =0;i<listaDiretores.size();i++){
+                DiretorDaEscola diretor = listaDiretores.get(i);
+                if(energia.getEscola().getDiretor().getCpf() == diretor.getCpf() && energia.getEscola().getDiretor().getNome().equals(diretor.getNome())){
+                    for(int j= 0;j<diretor.getPedidos().size();j++){
+                        if(e.equals(diretor.getPedidos().get(j).getTipo())){
+                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Não foi possivel realizar pedido");
+                            
+                        }
+                    }
+                }
+            }
+        }
+        atualizarPedidos(listaDiretores);
+        try {  
+            carregaTabela();
+        } catch (IOException ex) {
+            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
     }//GEN-LAST:event_btResolverActionPerformed
 
     private void btVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVoltarActionPerformed
@@ -150,16 +199,99 @@ public class TelaEnergia extends javax.swing.JFrame {
         this.dispose(); 
     }//GEN-LAST:event_btVoltarActionPerformed
 
+    private void tbChamadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbChamadosMouseClicked
+         indice = tbChamados.getSelectedRow();
+        try {
+            listaEnergia = carregarEnergia();
+            energia = listaEnergia.get(indice);
+        } catch (IOException ex) {
+            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+         btResolver.setEnabled(true);
+    }//GEN-LAST:event_tbChamadosMouseClicked
+    public void carregaTabela() throws IOException, ClassNotFoundException{
+        listaEnergia = carregarEnergia();
+        //System.out.println(listaEnergia.size());
+        Object[] colunas = new Object[]{"Diretor","Escola","Numero","Resolvido"};
+        Object[][] dadosPedidos = new Object[listaEnergia.size()][colunas.length]; 
+        for(int i=0;i<listaEnergia.size();i++){    
+                Object linha[]=new Object[]{listaEnergia.get(i).getEscola().getDiretor().getNome(),
+                                            listaEnergia.get(i).getEscola().getNome(),
+                                            listaEnergia.get(i).getId(),
+                                            listaEnergia.get(i).isResolvido()};
+                dadosPedidos[i] = linha;  
+                   
+        }
+        DefaultTableModel modelo = new DefaultTableModel(dadosPedidos,colunas);
+        tbChamados.setModel(modelo);
+        btResolver.setEnabled(false);
+    }
+    public ArrayList<Energia> carregarEnergia() throws IOException, ClassNotFoundException{
+        
+        try {
+            File arquivo = new File("src\\dados\\usuarios\\chamadosEnergia.txt"); 
+            GerenciadorDeArquivos<Energia> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
+            if (!arquivo.isDirectory() && arquivo.exists()) {
+                listaEnergia = gerenciadorDeArquivos.lerArquivo(arquivo);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Energia aqui (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+        } 
+        return this.listaEnergia;
+    }
+    public void atualizarEnergia(ArrayList<Energia> listaEnergia){
+        this.listaEnergia = listaEnergia;
+        try{
+            File arquivo = new File("src\\dados\\usuarios\\chamadosEnergia.txt");
+            GerenciadorDeArquivos<Energia> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
+            if (!arquivo.isDirectory() && arquivo.exists()) {
+                   gerenciadorDeArquivos.EscreverArquivo(listaEnergia,arquivo);
+                }
+        }catch (IOException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Energia aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                //this.dispose();
+        }
+    }
+    
+    public ArrayList<DiretorDaEscola> carregarDiretores(){
+        
+        try{
+            File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
+            GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivosDiretores = new GerenciadorDeArquivos<>();
+            if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
+                    this.listaDiretores = gerenciadorDeArquivosDiretores.lerArquivo(arquivoDiretores);
+                }
+        }catch (IOException | ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Diretores aqui (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                //this.dispose();
+        }
+        return this.listaDiretores;
+    }
+    
+    public void atualizarPedidos(ArrayList<DiretorDaEscola> listaDiretores){
+        this.listaDiretores = listaDiretores;
+        try{
+            File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
+            GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivosDiretores = new GerenciadorDeArquivos<>();
+            if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
+                   gerenciadorDeArquivosDiretores.EscreverArquivo(listaDiretores,arquivoDiretores);
+                }
+        }catch (IOException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Diretores aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                //this.dispose();
+        }
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btResolver;
     private javax.swing.JButton btVoltar;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tbEnergia;
-    private javax.swing.JTextField txtNumero;
+    private javax.swing.JTable tbChamados;
     // End of variables declaration//GEN-END:variables
 }

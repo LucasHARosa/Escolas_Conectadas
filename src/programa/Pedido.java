@@ -51,7 +51,7 @@ public class Pedido implements Serializable{
 
     public void atualizacao (boolean apto,String obs1){
         this.apto = apto;
-        String barra = "| Atualização |";
+        String barra = "| |";
         String obs2 = this.obs.concat(barra).concat(obs1);
         setObs(obs2);
     }

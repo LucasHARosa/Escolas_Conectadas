@@ -74,6 +74,7 @@ public class TelaDetalhePedidoDiretor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Detalhes dos Pedidos");
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Imagens/brasil.png")).getImage());
 
         jTable1.setModel(modeloTabela);
         jTable1.getTableHeader().setReorderingAllowed(false);

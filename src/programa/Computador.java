@@ -1,5 +1,7 @@
 package programa;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author lucas
@@ -17,6 +19,8 @@ public class Computador extends Chamado {
         this.modelo = modelo;
         this.valorTotal = valorTotal;
     }
+
+    
 
     public String getEmpresa() {
         return empresa;
@@ -50,6 +54,27 @@ public class Computador extends Chamado {
         this.valorTotal = valorTotal;
     }
     
+    
     @Override
-    public void resolverChamado(){}
+    public int resolverChamado(){
+        int opcao=0;
+        System.out.println(this.quantComputador);
+        System.out.println(this.getEscola().getNumMatriculas());
+        System.out.println(this.getEscola().getNumComputador());
+        if(this.quantComputador > 0){
+            setResolvido(true);
+            if(this.getEscola().isEnergia()==false){
+                opcao=10;    
+            }
+            if(this.getEscola().isInternet()==false){
+                opcao++;
+            }
+            JOptionPane.showMessageDialog(null,"O chamado foi resolvido e está em ordem","Mensagem",JOptionPane.PLAIN_MESSAGE);
+            this.getEscola().setNumComputador(this.getEscola().getNumMatriculas());
+        }   
+        else{
+            JOptionPane.showMessageDialog(null,"O chamado não poderá ser concluído a escola já tem Computadores","Mensagem",JOptionPane.PLAIN_MESSAGE);
+        }
+        return opcao;
+    }
 }

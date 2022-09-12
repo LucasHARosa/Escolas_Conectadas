@@ -1,5 +1,8 @@
 package Telas;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import programa.EntidadeDoGoverno;
 
@@ -14,7 +17,7 @@ public class TelaEntidade extends javax.swing.JFrame {
         this.paginaAnterior = paginaAnterior;
         this.entidade = entidade;
         initComponents();
-        setarTexto();
+        
     }
 
     /**
@@ -33,7 +36,6 @@ public class TelaEntidade extends javax.swing.JFrame {
         btEnergia = new javax.swing.JButton();
         btComputadores = new javax.swing.JButton();
         btInternet = new javax.swing.JButton();
-        labelpedidos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Entidade Governamental");
@@ -100,8 +102,6 @@ public class TelaEntidade extends javax.swing.JFrame {
             }
         });
 
-        labelpedidos.setFont(new java.awt.Font("Segoe UI", 1, 8)); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,18 +117,12 @@ public class TelaEntidade extends javax.swing.JFrame {
                     .addComponent(btEnergia, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(38, 38, 38))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelpedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelpedidos, javax.swing.GroupLayout.DEFAULT_SIZE, 15, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(btPedidos)
                 .addGap(18, 18, 18)
                 .addComponent(btEnergia)
@@ -141,13 +135,16 @@ public class TelaEntidade extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void setarTexto(){
-        String txt1 = "Total de x pedidos a serem realizados";
-        labelpedidos.setText(txt1);
-        
-    }
+    
     private void btEnergiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnergiaActionPerformed
-        TelaEnergia telaenergia = new TelaEnergia(this,entidade);
+        TelaEnergia telaenergia = null;
+        try {
+            telaenergia = new TelaEnergia(this,entidade);
+        } catch (IOException ex) {
+            Logger.getLogger(TelaEntidade.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaEntidade.class.getName()).log(Level.SEVERE, null, ex);
+        }
         telaenergia.setLocationRelativeTo(null);
         telaenergia.setVisible(true);
         this.setVisible(false);
@@ -161,14 +158,28 @@ public class TelaEntidade extends javax.swing.JFrame {
     }//GEN-LAST:event_btPedidosActionPerformed
 
     private void btComputadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btComputadoresActionPerformed
-        TelaComputador telacomputador = new TelaComputador(this,entidade);
+        TelaComputador telacomputador = null;
+        try {
+            telacomputador = new TelaComputador(this,entidade);
+        } catch (IOException ex) {
+            Logger.getLogger(TelaEntidade.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaEntidade.class.getName()).log(Level.SEVERE, null, ex);
+        }
         telacomputador.setLocationRelativeTo(null);
         telacomputador.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btComputadoresActionPerformed
 
     private void btInternetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInternetActionPerformed
-        TelaInternet telainternet = new TelaInternet(this,entidade);
+        TelaInternet telainternet = null;
+        try {
+            telainternet = new TelaInternet(this,entidade);
+        } catch (IOException ex) {
+            Logger.getLogger(TelaEntidade.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaEntidade.class.getName()).log(Level.SEVERE, null, ex);
+        }
         telainternet.setLocationRelativeTo(null);
         telainternet.setVisible(true);
         this.setVisible(false);
@@ -187,6 +198,5 @@ public class TelaEntidade extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel labelpedidos;
     // End of variables declaration//GEN-END:variables
 }

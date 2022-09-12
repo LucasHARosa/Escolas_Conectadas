@@ -1,7 +1,17 @@
 package Telas;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import programa.Computador;
+import programa.DiretorDaEscola;
 import programa.EntidadeDoGoverno;
+import programa.GerenciadorDeArquivos;
 
 /**
  *
@@ -10,13 +20,22 @@ import programa.EntidadeDoGoverno;
 public class TelaComputador extends javax.swing.JFrame {
     private JFrame paginaAnterior;
     private EntidadeDoGoverno entidade;
+    private Computador computador;
+    private ArrayList<DiretorDaEscola> listaDiretores;
+    private ArrayList<EntidadeDoGoverno> listaEntidade;
+    private ArrayList<Computador> listaComputador;
+    private String e = "Computador";
+    private int indice;
+    private int opcao;
     /**
      * Creates new form TelaComputador
      */
-    public TelaComputador(JFrame paginaAnterior,EntidadeDoGoverno entidade) {
+    public TelaComputador(JFrame paginaAnterior,EntidadeDoGoverno entidade) throws IOException, ClassNotFoundException {
         this.paginaAnterior= paginaAnterior;
         this.entidade = entidade;
+        listaDiretores = carregarDiretores();
         initComponents();
+        carregaTabela();
     }
 
     /**
@@ -30,12 +49,10 @@ public class TelaComputador extends javax.swing.JFrame {
 
         btResolver = new javax.swing.JButton();
         btVoltar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbComputador = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        txtNumero = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbChamados = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Chamados Computadores");
@@ -55,35 +72,17 @@ public class TelaComputador extends javax.swing.JFrame {
             }
         });
 
-        tbComputador.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Número", "Diretor", "Escola", "Resolvido"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tbComputador);
-
-        jLabel1.setText("Número");
-
-        txtNumero.setEditable(false);
-
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Chamados de computadores");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/computadorgrad.png"))); // NOI18N
+
+        tbChamados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbChamadosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbChamados);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,46 +92,35 @@ public class TelaComputador extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(84, 84, 84)
-                        .addComponent(jLabel3)))
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btResolver)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btVoltar)
+                                .addGap(92, 92, 92)
+                                .addComponent(jLabel2))
+                            .addComponent(jLabel3))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btResolver)
-                        .addGap(18, 18, 18)
-                        .addComponent(btVoltar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtNumero)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(55, 55, 55))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
+                        .addGap(38, 38, 38)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btResolver)
-                            .addComponent(btVoltar)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btVoltar)
+                            .addComponent(btResolver)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel2)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -140,7 +128,79 @@ public class TelaComputador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btResolverActionPerformed
-        // TODO add your handling code here:
+       if(computador.isResolvido()==false){
+             opcao = computador.resolverChamado();
+             if(opcao >=10){
+                 JOptionPane.showMessageDialog(null,"O chamado de Energia foi criado","Mensagem",JOptionPane.PLAIN_MESSAGE);
+                 try {
+                     entidade.criaChamadoEnergia(computador.getEscola());
+                 } catch (IOException ex) {
+                     Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
+                 } catch (ClassNotFoundException ex) {
+                     Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+             else if(opcao == 11 || opcao == 1){
+                 JOptionPane.showMessageDialog(null,"O chamado de Internet foi criado","Mensagem",JOptionPane.PLAIN_MESSAGE);
+                 try {
+                     entidade.criaChamadoComputador(computador.getEscola());
+                 } catch (IOException ex) {
+                     Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
+                 } catch (ClassNotFoundException ex) {
+                     Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+             
+            try {
+                entidade.mudarNome(entidade.getNome());
+            } catch (IOException ex) {
+                Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Esse chamado já foi resolvido, vá a página de pedidos e faça um novo chamado","Mensagem",JOptionPane.PLAIN_MESSAGE);
+        }
+        if( computador.isResolvido()==true){
+            listaDiretores = carregarDiretores();
+            for(int i =0;i<listaDiretores.size();i++){
+                DiretorDaEscola diretor = listaDiretores.get(i);
+                if( computador.getEscola().getDiretor().getCpf() == diretor.getCpf() &&  computador.getEscola().getDiretor().getNome().equals(diretor.getNome())){
+                    for(int j= 0;j<diretor.getPedidos().size();j++){
+                        if(e.equals(diretor.getPedidos().get(j).getTipo())){
+                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Chamado completo");
+                            //JOptionPane.showMessageDialog(null,"pedido atualizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
+                        }
+                    }
+                }
+            }
+           
+            
+        }
+        else{
+            listaDiretores = carregarDiretores();
+            for(int i =0;i<listaDiretores.size();i++){
+                DiretorDaEscola diretor = listaDiretores.get(i);
+                if( computador.getEscola().getDiretor().getCpf() == diretor.getCpf() &&  computador.getEscola().getDiretor().getNome().equals(diretor.getNome())){
+                    for(int j= 0;j<diretor.getPedidos().size();j++){
+                        if(e.equals(diretor.getPedidos().get(j).getTipo())){
+                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Não foi possivel realizar pedido");
+                            
+                        }
+                    }
+                }
+            }
+        }
+        atualizarPedidos(listaDiretores);
+        try {  
+            carregaTabela();
+        } catch (IOException ex) {
+            Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
     }//GEN-LAST:event_btResolverActionPerformed
 
     private void btVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVoltarActionPerformed
@@ -149,16 +209,114 @@ public class TelaComputador extends javax.swing.JFrame {
         this.dispose(); 
     }//GEN-LAST:event_btVoltarActionPerformed
 
+    private void tbChamadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbChamadosMouseClicked
+        indice = tbChamados.getSelectedRow();
+        try {
+            listaComputador = carregarComputador();
+            computador = listaComputador.get(indice);
+        } catch (IOException ex) {
+            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        btResolver.setEnabled(true);
+    }//GEN-LAST:event_tbChamadosMouseClicked
+
+   public void carregaTabela() throws IOException, ClassNotFoundException{
+        listaComputador = carregarComputador();
+        //System.out.println(listaComputador.size());
+        Object[] colunas = new Object[]{"Diretor","Escola","Numero","Resolvido"};
+        Object[][] dadosPedidos = new Object[listaComputador.size()][colunas.length]; 
+        for(int i=0;i<listaComputador.size();i++){    
+                Object linha[]=new Object[]{listaComputador.get(i).getEscola().getDiretor().getNome(),
+                                            listaComputador.get(i).getEscola().getNome(),
+                                            listaComputador.get(i).getId(),
+                                            listaComputador.get(i).isResolvido()};
+                dadosPedidos[i] = linha;  
+                   
+        }
+        DefaultTableModel modelo = new DefaultTableModel(dadosPedidos,colunas);
+        tbChamados.setModel(modelo);
+        btResolver.setEnabled(false);
+    }
    
+   
+   public ArrayList<Computador> carregarComputador() throws IOException, ClassNotFoundException{
+        
+        try {
+            File arquivo = new File("src\\dados\\usuarios\\chamadosComputador.txt"); 
+            GerenciadorDeArquivos<Computador> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
+            if (!arquivo.isDirectory() && arquivo.exists()) {
+                listaComputador = gerenciadorDeArquivos.lerArquivo(arquivo);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Computador (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+        } 
+        return this.listaComputador;
+    }
+    public void atualizarEnergia(ArrayList<Computador> listaComputador){
+        this.listaComputador = listaComputador;
+        try{
+            File arquivo = new File("src\\dados\\usuarios\\chamadosComputador.txt");
+            GerenciadorDeArquivos<Computador> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
+            if (!arquivo.isDirectory() && arquivo.exists()) {
+                   gerenciadorDeArquivos.EscreverArquivo(listaComputador,arquivo);
+                }
+        }catch (IOException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Computador aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                
+        }
+    }
+    public ArrayList<EntidadeDoGoverno> carregarEntidades() throws IOException, ClassNotFoundException{
+        
+        try {
+            File arquivo = new File("src\\dados\\usuarios\\entidades.txt");
+            
+            GerenciadorDeArquivos<EntidadeDoGoverno> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
+            listaEntidade = gerenciadorDeArquivos.lerArquivo(arquivo);
+            
+        } catch (IOException | ClassNotFoundException e) {
+            throw e;
+        } 
+        return this.listaEntidade;
+    }
+    
+    public ArrayList<DiretorDaEscola> carregarDiretores(){
+        
+        try{
+            File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
+            GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivosDiretores = new GerenciadorDeArquivos<>();
+            if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
+                    this.listaDiretores = gerenciadorDeArquivosDiretores.lerArquivo(arquivoDiretores);
+                }
+        }catch (IOException | ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Diretores aqui (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                //this.dispose();
+        }
+        return this.listaDiretores;
+    }
+    
+    public void atualizarPedidos(ArrayList<DiretorDaEscola> listaDiretores){
+        this.listaDiretores = listaDiretores;
+        try{
+            File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
+            GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivosDiretores = new GerenciadorDeArquivos<>();
+            if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
+                   gerenciadorDeArquivosDiretores.EscreverArquivo(listaDiretores,arquivoDiretores);
+                }
+        }catch (IOException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Diretores aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                //this.dispose();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btResolver;
     private javax.swing.JButton btVoltar;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tbComputador;
-    private javax.swing.JTextField txtNumero;
+    private javax.swing.JTable tbChamados;
     // End of variables declaration//GEN-END:variables
 }

@@ -40,6 +40,7 @@ public class TelaDiretor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Diretor");
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Imagens/brasil.png")).getImage());
 
         jLabel1.setText("Bem Vindo(a) Sr(a).");
 

@@ -58,6 +58,7 @@ public class TelaCadastroEntidade extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Entidade do Governo");
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Imagens/brasil.png")).getImage());
 
         jLabel3.setText("Nome:");
 

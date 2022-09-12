@@ -16,22 +16,13 @@ public class TelaPedidoDiretor extends javax.swing.JFrame {
     private JFrame paginaAnterior;
     private DiretorDaEscola diretor;
     private String tipoEscolhido = "";
-    public ArrayList<Pedido> listaPedidos;
+    
     /**
      * Creates new form TelaPedidoDiretor
      */
     public TelaPedidoDiretor(JFrame paginaAnterior, DiretorDaEscola diretor) {
         this.paginaAnterior = paginaAnterior;
         this.diretor = diretor;
-        listaPedidos = new ArrayList();
-        
-        try{
-            File arquivoPedidos = new File("src\\dados\\usuarios\\pedidos.txt");
-            GerenciadorDeArquivos<Pedido> gerenciadorDeArquivosPedidos = new GerenciadorDeArquivos<>();
-            listaPedidos = gerenciadorDeArquivosPedidos.lerArquivo(arquivoPedidos);  
-        }catch (IOException | ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo pedidos (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);      
-        }
         initComponents();
     }
 
@@ -161,29 +152,14 @@ public class TelaPedidoDiretor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPedidoActionPerformed
-        listaPedidos = new ArrayList();
-        try{
-            File arquivoPedidos = new File("src\\dados\\usuarios\\pedidos.txt");
-            GerenciadorDeArquivos<Pedido> gerenciadorDeArquivosPedidos = new GerenciadorDeArquivos<>();
-            listaPedidos = gerenciadorDeArquivosPedidos.lerArquivo(arquivoPedidos);
-        }catch (IOException | ClassNotFoundException e) {
-                JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo pedidos 22 (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                this.dispose();
-        }
+        
         if (tipoEscolhido.isBlank()) {
             JOptionPane.showMessageDialog(null,"Por favor selecione um tipo de pedido","AVISO" ,JOptionPane.WARNING_MESSAGE);
         } 
         else{
             try {
                 Pedido novoPedido = new Pedido(tipoEscolhido, diretor, observacao.getText());
-                listaPedidos.add(novoPedido);
-                try{
-                    File arquivoPedidos = new File("src\\dados\\usuarios\\pedidos.txt");
-                    GerenciadorDeArquivos<Pedido> gerenciadorDeArquivosPedidos = new GerenciadorDeArquivos<>();
-                    gerenciadorDeArquivosPedidos.EscreverArquivo(listaPedidos,arquivoPedidos);
-                }catch (IOException e) {
-                    JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Pedidos (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);           
-                }
+                
                 boolean pedidoFoiRealizado = diretor.fazerPedido(novoPedido);
                 if (!pedidoFoiRealizado) {
                     JOptionPane.showMessageDialog(null,"Um pedido desse tipo já foi realizado, por favor exclua-o caso seja necessário realizar outro",

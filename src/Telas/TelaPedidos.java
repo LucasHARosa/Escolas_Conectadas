@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import programa.DiretorDaEscola;
+import programa.Energia;
 import programa.EntidadeDoGoverno;
 import programa.Escola;
 import programa.GerenciadorDeArquivos;
@@ -18,11 +19,13 @@ import programa.Pedido;
 public class TelaPedidos extends javax.swing.JFrame {
     private JFrame paginaAnterior;
     private EntidadeDoGoverno entidade;
-    public ArrayList<DiretorDaEscola> listaDiretores;
-    public ArrayList<DiretorDaEscola> listaDiretoresnovo;
-    public int indice;
-    public int line;
-    public Escola escola;
+    private ArrayList<DiretorDaEscola> listaDiretores;
+    private ArrayList<DiretorDaEscola> listaDiretoresnovo;
+    private ArrayList<EntidadeDoGoverno> listaEntidade;
+    private int indice;
+    private int line;
+    private Escola escola;
+    Pedido pedidoselecionado;
     
     
     
@@ -241,47 +244,90 @@ public class TelaPedidos extends javax.swing.JFrame {
        
     private void btChamadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btChamadoActionPerformed
         String tipoChamado = txtTipo.getText();
-        
-        if(tipoChamado.equals("Energia")){
-            entidade.criaChamadoEnergia(escola);
+        if(pedidoselecionado.isApto() == true){
+            JOptionPane.showMessageDialog(null,"Chamado ja realizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
+        }
+        else if(tipoChamado.equals("Energia")){
+            
+            try {
+                entidade.criaChamadoEnergia(escola);
+            } catch (IOException ex) {
+                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
             JOptionPane.showMessageDialog(null,"Chamado criado com sucesso!","Menssagem",JOptionPane.PLAIN_MESSAGE);
-            for(int i=0;i<listaDiretores.size();i++){
-            for(int j =0;j<listaDiretores.get(i).getPedidos().size();j++){
-                line++;
-                if(indice == line ){
-                    listaDiretores.get(i).getPedidos().get(j).atualizacao(true,"Pedido Realizado");
+            listaDiretores = carregarDiretores();
+            for(int i =0;i<listaDiretores.size();i++){
+                DiretorDaEscola diretor = listaDiretores.get(i);
+                if(pedidoselecionado.getDiretorDaEscola().getCpf() == diretor.getCpf() && pedidoselecionado.getDiretorDaEscola().getNome().equals(diretor.getNome())){
+                    for(int j= 0;j<diretor.getPedidos().size();j++){
+                        if(pedidoselecionado.getTipo().equals(diretor.getPedidos().get(j).getTipo())){
+                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Pedido Realizado");
+                            //JOptionPane.showMessageDialog(null,"pedido atualizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
+                        }
+                    }
                 }
             }
-        }
+            
+            
             atualizarPedidos(listaDiretores);
             
         }
         else if(tipoChamado.equals("Computador")){
-            entidade.criaChamadoComputador(escola);
+            try {
+                entidade.criaChamadoComputador(escola);
+            } catch (IOException ex) {
+                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
             JOptionPane.showMessageDialog(null,"Chamado criado com sucesso!","Menssagem",JOptionPane.PLAIN_MESSAGE);
-            for(int i=0;i<listaDiretores.size();i++){
-            for(int j =0;j<listaDiretores.get(i).getPedidos().size();j++){
-                line++;
-                if(indice == line ){
-                    listaDiretores.get(i).getPedidos().get(j).atualizacao(true,"Pedido Realizado");
+            listaDiretores = carregarDiretores();
+            for(int i =0;i<listaDiretores.size();i++){
+                DiretorDaEscola diretor = listaDiretores.get(i);
+                if(pedidoselecionado.getDiretorDaEscola().getCpf() == diretor.getCpf() && pedidoselecionado.getDiretorDaEscola().getNome().equals(diretor.getNome())){
+                    for(int j= 0;j<diretor.getPedidos().size();j++){
+                        if(pedidoselecionado.getTipo().equals(diretor.getPedidos().get(j).getTipo())){
+                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Pedido Realizado");
+                            
+                        }
+                    }
                 }
             }
-        }
+            
+            
             atualizarPedidos(listaDiretores);
+            
         }
         else if(tipoChamado.equals("Internet")){
-            entidade.criaChamadoInternet(escola);
+            try {
+                entidade.criaChamadoInternet(escola);
+            } catch (IOException ex) {
+                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
             JOptionPane.showMessageDialog(null,"Chamado criado com sucesso!","Menssagem",JOptionPane.PLAIN_MESSAGE);
-            for(int i=0;i<listaDiretores.size();i++){
-            for(int j =0;j<listaDiretores.get(i).getPedidos().size();j++){
-                line++;
-                if(indice == line ){
-                    listaDiretores.get(i).getPedidos().get(j).atualizacao(true,"Pedido Realizado");
+            listaDiretores = carregarDiretores();
+            for(int i =0;i<listaDiretores.size();i++){
+                DiretorDaEscola diretor = listaDiretores.get(i);
+                if(pedidoselecionado.getDiretorDaEscola().getCpf() == diretor.getCpf() && pedidoselecionado.getDiretorDaEscola().getNome().equals(diretor.getNome())){
+                    for(int j= 0;j<diretor.getPedidos().size();j++){
+                        if(pedidoselecionado.getTipo().equals(diretor.getPedidos().get(j).getTipo())){
+                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Pedido Realizado");
+                            //JOptionPane.showMessageDialog(null,"pedido atualizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
+                        }
+                    }
                 }
             }
-        }
+            
+            
+            
             atualizarPedidos(listaDiretores);
+            
         }
+        
         else{
             JOptionPane.showMessageDialog(null,"Não foi possivel criar o chamado!","Erro",JOptionPane.ERROR);
         }
@@ -292,25 +338,26 @@ public class TelaPedidos extends javax.swing.JFrame {
         txtObservacao.setText("");
         btChamado.setEnabled(false);
         this.listaDiretores = carregarDiretores();
-        
+        carregarTabelaPedidos();
     }//GEN-LAST:event_btChamadoActionPerformed
 
     private void tbPedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPedidosMouseClicked
         indice = tbPedidos.getSelectedRow();
-        line = 0;
-        for(int i=0;i<listaDiretores.size();i++){
-            for(int j =0;j<listaDiretores.get(i).getPedidos().size();j++){
-                line++;
-                if(indice == line ){
-                    escola = listaDiretores.get(i).getEscola();
-                    txtDiretor.setText(listaDiretores.get(i).getNome());
-                    txtEscola.setText(listaDiretores.get(i).getEscola().getNome());
-                    txtTipo.setText(listaDiretores.get(indice).getPedidos().get(j).getTipo());
-                    txtAceito.setText(String.valueOf(listaDiretores.get(indice).getPedidos().get(j).isApto()));
-                    txtObservacao.setText(listaDiretores.get(indice).getPedidos().get(j).getObs());
-                }
-            }
+        listaDiretores = carregarDiretores();
+        ArrayList<Pedido> pedidos =new ArrayList<>();
+        for(DiretorDaEscola dir : listaDiretores){
+            pedidos.addAll(dir.getPedidos());
         }
+        
+        pedidoselecionado = pedidos.get(indice);
+        escola = pedidoselecionado.getDiretorDaEscola().getEscola();
+        txtDiretor.setText(pedidoselecionado.getDiretorDaEscola().getNome());
+        txtEscola.setText(pedidoselecionado.getDiretorDaEscola().getEscola().getNome());
+        txtTipo.setText(pedidoselecionado.getTipo());
+        txtAceito.setText(String.valueOf(pedidoselecionado.isApto()));
+        txtObservacao.setText(pedidoselecionado.getObs());
+                   
+
         
         btChamado.setEnabled(true);
     }//GEN-LAST:event_tbPedidosMouseClicked
@@ -321,23 +368,18 @@ public class TelaPedidos extends javax.swing.JFrame {
         this.dispose(); 
     }//GEN-LAST:event_btVoltarActionPerformed
     public void carregarTabelaPedidos(){
-        GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
-        ArrayList<DiretorDaEscola> diretores = new ArrayList<>();
-        try {
-            diretores = gerenciadorDeArquivos.lerArquivo(new File("src\\dados\\usuarios\\diretores.txt"));
-        } catch (IOException | ClassNotFoundException ex) {
-             JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante os Pedidos (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-        } 
-        //listaDiretores = carregarDiretores();
+        
+        listaDiretores = carregarDiretores();
         ArrayList<Pedido> pedidos =new ArrayList<>();
-        for(DiretorDaEscola dir : diretores){
+        for(DiretorDaEscola dir : listaDiretores){
             pedidos.addAll(dir.getPedidos());
         }
-        Object[] colunas = new Object[]{"Diretor","Escola","Tipo","Observação"};
+        Object[] colunas = new Object[]{"Diretor","Escola","Aceito","Tipo","Observação"};
         Object[][] dadosPedidos = new Object[pedidos.size()][colunas.length]; 
         for(int i=0;i<pedidos.size();i++){    
                 Object linha[]=new Object[]{pedidos.get(i).getDiretorDaEscola().getNome(),
                                             pedidos.get(i).getDiretorDaEscola().getEscola().getNome(),
+                                            pedidos.get(i).isApto(),
                                             pedidos.get(i).getTipo(),
                                             pedidos.get(i).getObs()};
                 dadosPedidos[i] = linha;  
@@ -355,7 +397,7 @@ public class TelaPedidos extends javax.swing.JFrame {
                     this.listaDiretores = gerenciadorDeArquivosDiretores.lerArquivo(arquivoDiretores);
                 }
         }catch (IOException | ClassNotFoundException e) {
-                JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Diretores (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Diretores aqui (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
                 //this.dispose();
         }
         return this.listaDiretores;
@@ -364,14 +406,42 @@ public class TelaPedidos extends javax.swing.JFrame {
     public void atualizarPedidos(ArrayList<DiretorDaEscola> listaDiretores){
         this.listaDiretores = listaDiretores;
         try{
-            File arquivoDiretores = new File("src\\dados\\usuarios\\pedidos.txt");
+            File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
             GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivosDiretores = new GerenciadorDeArquivos<>();
             if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
                    gerenciadorDeArquivosDiretores.EscreverArquivo(listaDiretores,arquivoDiretores);
                 }
         }catch (IOException e) {
-                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Diretores (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                this.dispose();
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Diretores aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                //this.dispose();
+        }
+    }
+    public ArrayList<EntidadeDoGoverno> carregarEntidades(){
+        
+        try{
+            File arquivo = new File("src\\dados\\usuarios\\entidades.txt");
+            GerenciadorDeArquivos<EntidadeDoGoverno> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
+            if (!arquivo.isDirectory() && arquivo.exists()) {
+                    this.listaEntidade = gerenciadorDeArquivos.lerArquivo(arquivo);
+                }
+        }catch (IOException | ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Entidades (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                //this.dispose();
+        }
+        return this.listaEntidade;
+    }
+    
+    public void atualizarEntidades(ArrayList<EntidadeDoGoverno> listaEntidade){
+        this.listaEntidade = listaEntidade;
+        try{
+            File arquivo = new File("src\\dados\\usuarios\\entidades.txt");
+            GerenciadorDeArquivos<EntidadeDoGoverno> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
+            if (!arquivo.isDirectory() && arquivo.exists()) {
+                   gerenciadorDeArquivos.EscreverArquivo(listaEntidade,arquivo);
+                }
+        }catch (IOException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Entidades (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                //this.dispose();
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

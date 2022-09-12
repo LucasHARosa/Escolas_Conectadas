@@ -1,20 +1,39 @@
 
 package Telas;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import programa.DiretorDaEscola;
+import programa.Internet;
 import programa.EntidadeDoGoverno;
+import programa.GerenciadorDeArquivos;
+import programa.Internet;
 
 
 public class TelaInternet extends javax.swing.JFrame {
-    private JFrame paginaAnterior;
+   private JFrame paginaAnterior;
     private EntidadeDoGoverno entidade;
+    private ArrayList<DiretorDaEscola> listaDiretores;
+    private ArrayList<EntidadeDoGoverno> listaEntidade;
+    private ArrayList<Internet> listaInternet;
+    private Internet internet;
+    private String e = "Internet";
+    private int indice;
+    private int opcao;
     /**
      * Creates new form TelaInternet
      */
-    public TelaInternet(JFrame paginaAnterior,EntidadeDoGoverno entidade) {
+    public TelaInternet(JFrame paginaAnterior,EntidadeDoGoverno entidade) throws IOException, ClassNotFoundException {
         this.paginaAnterior = paginaAnterior;
         this.entidade = entidade;
         initComponents();
+        carregaTabela();
     }
 
     /**
@@ -28,12 +47,10 @@ public class TelaInternet extends javax.swing.JFrame {
 
         btResolver = new javax.swing.JButton();
         btVoltar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbInternet = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        txtNumero = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbChamados = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,86 +68,131 @@ public class TelaInternet extends javax.swing.JFrame {
             }
         });
 
-        tbInternet.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Número", "Diretor", "Escola", "Resolvido"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tbInternet);
-
-        jLabel1.setText("Número");
-
-        txtNumero.setEditable(false);
-
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Chamados de internet");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/internetGrande.png"))); // NOI18N
+
+        tbChamados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbChamadosMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tbChamados);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(13, 13, 13)
+                .addComponent(btResolver)
+                .addGap(18, 18, 18)
+                .addComponent(btVoltar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(25, 25, 25))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btResolver)
-                        .addGap(18, 18, 18)
-                        .addComponent(btVoltar))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(131, 131, 131)
-                                .addComponent(jLabel2))))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(105, 105, 105)
+                        .addGap(96, 96, 96)
                         .addComponent(jLabel3)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btResolver)
-                            .addComponent(btVoltar)))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btVoltar)
+                            .addComponent(btResolver))
+                        .addGap(37, 37, 37)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btResolverActionPerformed
-        // TODO add your handling code here:
+        if(internet.isResolvido()==false){
+            opcao = internet.resolverChamado();
+            if(opcao == 10){
+                JOptionPane.showMessageDialog(null,"O chamado de Energia foi criado","Mensagem",JOptionPane.PLAIN_MESSAGE);
+                try {
+                    entidade.criaChamadoEnergia(internet.getEscola());
+                } catch (IOException ex) {
+                    Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            try {
+                listaInternet = carregarInternet();
+            } catch (IOException ex) {
+                Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for(int i =0;i<listaInternet.size();i++){
+                Internet e = listaInternet.get(i);
+                if(internet.getEscola().getNome().equals(e.getEscola().getNome())){
+                    listaInternet.set(i, internet);
+                    atualizarInternet(listaInternet);
+                }
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Esse chamado já foi resolvido, vá a página de pedidos e faça um novo chamado","Mensagem",JOptionPane.PLAIN_MESSAGE);
+        }
+        if(internet.isResolvido()==true){
+            listaDiretores = carregarDiretores();
+            for(int i =0;i<listaDiretores.size();i++){
+                DiretorDaEscola diretor = listaDiretores.get(i);
+                if(internet.getEscola().getDiretor().getCpf() == diretor.getCpf() && internet.getEscola().getDiretor().getNome().equals(diretor.getNome())){
+                    for(int j= 0;j<diretor.getPedidos().size();j++){
+                        if(e.equals(diretor.getPedidos().get(j).getTipo())){
+                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Chamado completo");
+                            //JOptionPane.showMessageDialog(null,"pedido atualizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
+                        }
+                    }
+                }
+            }
+           
+            
+        }
+        else{
+            listaDiretores = carregarDiretores();
+            for(int i =0;i<listaDiretores.size();i++){
+                DiretorDaEscola diretor = listaDiretores.get(i);
+                if(internet.getEscola().getDiretor().getCpf() == diretor.getCpf() && internet.getEscola().getDiretor().getNome().equals(diretor.getNome())){
+                    for(int j= 0;j<diretor.getPedidos().size();j++){
+                        if(e.equals(diretor.getPedidos().get(j).getTipo())){
+                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Não foi possivel realizar pedido");
+                            
+                        }
+                    }
+                }
+            }
+        }
+        atualizarPedidos(listaDiretores);
+        try {  
+            carregaTabela();
+        } catch (IOException ex) {
+            Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
     }//GEN-LAST:event_btResolverActionPerformed
 
     private void btVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVoltarActionPerformed
@@ -139,16 +201,99 @@ public class TelaInternet extends javax.swing.JFrame {
         this.dispose(); 
     }//GEN-LAST:event_btVoltarActionPerformed
 
+    private void tbChamadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbChamadosMouseClicked
+        indice = tbChamados.getSelectedRow();
+        try {
+            listaInternet = carregarInternet();
+            internet = listaInternet.get(indice);
+        } catch (IOException ex) {
+            Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        btResolver.setEnabled(true);
+    }//GEN-LAST:event_tbChamadosMouseClicked
+    public void carregaTabela() throws IOException, ClassNotFoundException{
+        listaInternet = carregarInternet();
+        //System.out.println(listaInternet.size());
+        Object[] colunas = new Object[]{"Diretor","Escola","Numero","Resolvido"};
+        Object[][] dadosPedidos = new Object[listaInternet.size()][colunas.length]; 
+        for(int i=0;i<listaInternet.size();i++){    
+                Object linha[]=new Object[]{listaInternet.get(i).getEscola().getDiretor().getNome(),
+                                            listaInternet.get(i).getEscola().getNome(),
+                                            listaInternet.get(i).getId(),
+                                            listaInternet.get(i).isResolvido()};
+                dadosPedidos[i] = linha;  
+                   
+        }
+        DefaultTableModel modelo = new DefaultTableModel(dadosPedidos,colunas);
+        tbChamados.setModel(modelo);
+        btResolver.setEnabled(false);
+    }
+    public ArrayList<Internet> carregarInternet() throws IOException, ClassNotFoundException{
+        
+        try {
+            File arquivo = new File("src\\dados\\usuarios\\chamadosInternet.txt"); 
+            GerenciadorDeArquivos<Internet> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
+            if (!arquivo.isDirectory() && arquivo.exists()) {
+                listaInternet = gerenciadorDeArquivos.lerArquivo(arquivo);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Internet aqui (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+        } 
+        return this.listaInternet;
+    }
+    public void atualizarInternet(ArrayList<Internet> listaInternet){
+        this.listaInternet = listaInternet;
+        try{
+            File arquivo = new File("src\\dados\\usuarios\\chamadosInternet.txt");
+            GerenciadorDeArquivos<Internet> gerenciadorDeArquivos = new GerenciadorDeArquivos<>();
+            if (!arquivo.isDirectory() && arquivo.exists()) {
+                   gerenciadorDeArquivos.EscreverArquivo(listaInternet,arquivo);
+                }
+        }catch (IOException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Internet aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                //this.dispose();
+        }
+    }
+    
+    public ArrayList<DiretorDaEscola> carregarDiretores(){
+        
+        try{
+            File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
+            GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivosDiretores = new GerenciadorDeArquivos<>();
+            if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
+                    this.listaDiretores = gerenciadorDeArquivosDiretores.lerArquivo(arquivoDiretores);
+                }
+        }catch (IOException | ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Diretores aqui (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                //this.dispose();
+        }
+        return this.listaDiretores;
+    }
+    
+    public void atualizarPedidos(ArrayList<DiretorDaEscola> listaDiretores){
+        this.listaDiretores = listaDiretores;
+        try{
+            File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
+            GerenciadorDeArquivos<DiretorDaEscola> gerenciadorDeArquivosDiretores = new GerenciadorDeArquivos<>();
+            if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
+                   gerenciadorDeArquivosDiretores.EscreverArquivo(listaDiretores,arquivoDiretores);
+                }
+        }catch (IOException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Diretores aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+                //this.dispose();
+        }
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btResolver;
     private javax.swing.JButton btVoltar;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tbInternet;
-    private javax.swing.JTextField txtNumero;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tbChamados;
     // End of variables declaration//GEN-END:variables
 }

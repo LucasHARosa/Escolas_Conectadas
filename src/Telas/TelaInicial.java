@@ -62,19 +62,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 this.dispose();
             }
         }
-        File arquivoPedidos = new File("src\\dados\\usuarios\\pedidos.txt");
-        if(!arquivoPedidos.isDirectory() && !arquivoPedidos.exists()){
-            JOptionPane.showMessageDialog(null,"criando do zero" ,"mensagem" ,JOptionPane.PLAIN_MESSAGE);
-            try{
-                ArrayList<Pedido> listaPedidos = new ArrayList<>();
-                GerenciadorDeArquivos<Pedido> gerenciadorDeArquivosPedidos = new GerenciadorDeArquivos<>();
-                gerenciadorDeArquivosPedidos.EscreverArquivo(listaPedidos, arquivoPedidos);
-            }catch (IOException e) {
-                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a Inicialização do Arquivo de pedidos (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                this.dispose();
-            }
-            
-        }
+        
         try {
                 File arquivoEntidades = new File("src\\dados\\usuarios\\entidades.txt");
                 File arquivoDiretores = new File("src\\dados\\usuarios\\diretores.txt");
