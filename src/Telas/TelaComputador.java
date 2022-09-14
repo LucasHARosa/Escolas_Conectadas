@@ -3,8 +3,6 @@ package Telas;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -23,7 +21,7 @@ public class TelaComputador extends javax.swing.JFrame {
     private Computador computador;
     private ArrayList<DiretorDaEscola> listaDiretores;
     private ArrayList<EntidadeDoGoverno> listaEntidade;
-    private ArrayList<Computador> listaComputador;
+    private ArrayList<Computador> listaComputador = new ArrayList<>();
     private String e = "Computador";
     private int indice;
     private int opcao;
@@ -133,30 +131,24 @@ public class TelaComputador extends javax.swing.JFrame {
              if(opcao >=10){
                  JOptionPane.showMessageDialog(null,"O chamado de Energia foi criado","Mensagem",JOptionPane.PLAIN_MESSAGE);
                  try {
-                     entidade.criaChamadoEnergia(computador.getEscola());
-                 } catch (IOException ex) {
-                     Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
-                 } catch (ClassNotFoundException ex) {
-                     Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
+                    entidade.criaChamadoEnergia(computador.getEscola());
+                 } catch (IOException | ClassNotFoundException ex) {
+                    JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante o Carregamento dos Chamados de Computador (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
                  }
              }
              else if(opcao == 11 || opcao == 1){
                  JOptionPane.showMessageDialog(null,"O chamado de Internet foi criado","Mensagem",JOptionPane.PLAIN_MESSAGE);
                  try {
                      entidade.criaChamadoComputador(computador.getEscola());
-                 } catch (IOException ex) {
-                     Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
-                 } catch (ClassNotFoundException ex) {
-                     Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
+                 } catch (IOException | ClassNotFoundException ex) {
+                    JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante o Carregamento dos Chamados de Computador (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
                  }
              }
              
             try {
                 entidade.mudarNome(entidade.getNome());
-            } catch (IOException ex) {
-                Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException | ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante o Carregamento dos Chamados de Computador (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
             }
         }
         else{
@@ -170,7 +162,6 @@ public class TelaComputador extends javax.swing.JFrame {
                     for(int j= 0;j<diretor.getPedidos().size();j++){
                         if(e.equals(diretor.getPedidos().get(j).getTipo())){
                             listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Chamado completo");
-                            //JOptionPane.showMessageDialog(null,"pedido atualizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
                         }
                     }
                 }
@@ -195,10 +186,8 @@ public class TelaComputador extends javax.swing.JFrame {
         atualizarPedidos(listaDiretores);
         try {  
             carregaTabela();
-        } catch (IOException ex) {
-            Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TelaComputador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante o Carregamento da Tabela (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
         }
        
     }//GEN-LAST:event_btResolverActionPerformed
@@ -214,10 +203,8 @@ public class TelaComputador extends javax.swing.JFrame {
         try {
             listaComputador = carregarComputador();
             computador = listaComputador.get(indice);
-        } catch (IOException ex) {
-            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante o Carregamento dos Chamados de Computador (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
         }
 
         btResolver.setEnabled(true);
@@ -225,7 +212,6 @@ public class TelaComputador extends javax.swing.JFrame {
 
    public void carregaTabela() throws IOException, ClassNotFoundException{
         listaComputador = carregarComputador();
-        //System.out.println(listaComputador.size());
         Object[] colunas = new Object[]{"Diretor","Escola","Numero","Resolvido"};
         Object[][] dadosPedidos = new Object[listaComputador.size()][colunas.length]; 
         for(int i=0;i<listaComputador.size();i++){    
@@ -250,8 +236,8 @@ public class TelaComputador extends javax.swing.JFrame {
             if (!arquivo.isDirectory() && arquivo.exists()) {
                 listaComputador = gerenciadorDeArquivos.lerArquivo(arquivo);
             }
-        } catch (IOException | ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Computador (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Computador (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
         } 
         return this.listaComputador;
     }
@@ -292,7 +278,6 @@ public class TelaComputador extends javax.swing.JFrame {
                 }
         }catch (IOException | ClassNotFoundException e) {
                 JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Diretores aqui (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                //this.dispose();
         }
         return this.listaDiretores;
     }
@@ -305,9 +290,8 @@ public class TelaComputador extends javax.swing.JFrame {
             if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
                    gerenciadorDeArquivosDiretores.EscreverArquivo(listaDiretores,arquivoDiretores);
                 }
-        }catch (IOException e) {
-                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Diretores aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                //this.dispose();
+        }catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Diretores aqui(" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
         }
     }
 

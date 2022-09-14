@@ -3,8 +3,6 @@ package Telas;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -12,7 +10,6 @@ import programa.DiretorDaEscola;
 import programa.Energia;
 import programa.EntidadeDoGoverno;
 import programa.GerenciadorDeArquivos;
-import programa.Pedido;
 
 /**
  *
@@ -23,7 +20,7 @@ public class TelaEnergia extends javax.swing.JFrame {
     private EntidadeDoGoverno entidade;
     private ArrayList<DiretorDaEscola> listaDiretores;
     private ArrayList<EntidadeDoGoverno> listaEntidade;
-    private ArrayList<Energia> listaEnergia;
+    private ArrayList<Energia> listaEnergia  = new ArrayList<>();
     private Energia energia;
     private String e = "Energia";
     private int indice;
@@ -136,18 +133,17 @@ public class TelaEnergia extends javax.swing.JFrame {
             opcao = energia.resolverChamado();
             try {
                 listaEnergia = carregarEnergia();
-            } catch (IOException ex) {
-                Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            for(int i =0;i<listaEnergia.size();i++){
-                Energia e = listaEnergia.get(i);
-                if(energia.getEscola().getNome().equals(e.getEscola().getNome())){
-                    listaEnergia.set(i, energia);
-                    atualizarEnergia(listaEnergia);
+                for(int i =0;i<listaEnergia.size();i++){
+                    Energia e = listaEnergia.get(i);
+                    if(energia.getEscola().getNome().equals(e.getEscola().getNome())){
+                        listaEnergia.set(i, energia);
+                        atualizarEnergia(listaEnergia);
+                    }
                 }
+            } catch (IOException | ClassNotFoundException ex) {
+               JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante o Carregamento dos Chamados de Energia (" + ex.toString() + ")" , "ERRO" ,JOptionPane.ERROR_MESSAGE);
             }
+            
         }
         else{
             JOptionPane.showMessageDialog(null,"Esse chamado já foi resolvido, vá a página de pedidos e faça um novo chamado","Mensagem",JOptionPane.PLAIN_MESSAGE);
@@ -160,7 +156,6 @@ public class TelaEnergia extends javax.swing.JFrame {
                     for(int j= 0;j<diretor.getPedidos().size();j++){
                         if(e.equals(diretor.getPedidos().get(j).getTipo())){
                             listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Chamado completo");
-                            //JOptionPane.showMessageDialog(null,"pedido atualizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
                         }
                     }
                 }
@@ -185,10 +180,8 @@ public class TelaEnergia extends javax.swing.JFrame {
         atualizarPedidos(listaDiretores);
         try {  
             carregaTabela();
-        } catch (IOException ex) {
-            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante o Carregamento dos Chamados de Energia (" + ex.toString() + ")" , "ERRO" ,JOptionPane.ERROR_MESSAGE);
         }
        
     }//GEN-LAST:event_btResolverActionPerformed
@@ -204,17 +197,14 @@ public class TelaEnergia extends javax.swing.JFrame {
         try {
             listaEnergia = carregarEnergia();
             energia = listaEnergia.get(indice);
-        } catch (IOException ex) {
-            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TelaEnergia.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null,"Ocorreu um Erro com a Tabela (" + ex.toString() + ")" , "ERRO" ,JOptionPane.ERROR_MESSAGE);
         }
         
          btResolver.setEnabled(true);
     }//GEN-LAST:event_tbChamadosMouseClicked
     public void carregaTabela() throws IOException, ClassNotFoundException{
         listaEnergia = carregarEnergia();
-        //System.out.println(listaEnergia.size());
         Object[] colunas = new Object[]{"Diretor","Escola","Numero","Resolvido"};
         Object[][] dadosPedidos = new Object[listaEnergia.size()][colunas.length]; 
         for(int i=0;i<listaEnergia.size();i++){    
@@ -237,8 +227,8 @@ public class TelaEnergia extends javax.swing.JFrame {
             if (!arquivo.isDirectory() && arquivo.exists()) {
                 listaEnergia = gerenciadorDeArquivos.lerArquivo(arquivo);
             }
-        } catch (IOException | ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Energia aqui (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Energia aqui (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
         } 
         return this.listaEnergia;
     }
@@ -250,9 +240,8 @@ public class TelaEnergia extends javax.swing.JFrame {
             if (!arquivo.isDirectory() && arquivo.exists()) {
                    gerenciadorDeArquivos.EscreverArquivo(listaEnergia,arquivo);
                 }
-        }catch (IOException e) {
-                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Energia aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                //this.dispose();
+        }catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Energia aqui(" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -266,7 +255,6 @@ public class TelaEnergia extends javax.swing.JFrame {
                 }
         }catch (IOException | ClassNotFoundException e) {
                 JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Diretores aqui (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                //this.dispose();
         }
         return this.listaDiretores;
     }
@@ -281,7 +269,6 @@ public class TelaEnergia extends javax.swing.JFrame {
                 }
         }catch (IOException e) {
                 JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Diretores aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                //this.dispose();
         }
     }
     

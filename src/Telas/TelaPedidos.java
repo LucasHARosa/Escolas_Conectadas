@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import programa.DiretorDaEscola;
-import programa.Energia;
 import programa.EntidadeDoGoverno;
 import programa.Escola;
 import programa.GerenciadorDeArquivos;
@@ -243,6 +242,7 @@ public class TelaPedidos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
        
     private void btChamadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btChamadoActionPerformed
+        indice = tbPedidos.getSelectedRow();
         String tipoChamado = txtTipo.getText();
         if(pedidoselecionado.isApto() == true){
             JOptionPane.showMessageDialog(null,"Chamado ja realizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
@@ -251,81 +251,68 @@ public class TelaPedidos extends javax.swing.JFrame {
             
             try {
                 entidade.criaChamadoEnergia(escola);
-            } catch (IOException ex) {
-                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            JOptionPane.showMessageDialog(null,"Chamado criado com sucesso!","Menssagem",JOptionPane.PLAIN_MESSAGE);
-            listaDiretores = carregarDiretores();
-            for(int i =0;i<listaDiretores.size();i++){
-                DiretorDaEscola diretor = listaDiretores.get(i);
-                if(pedidoselecionado.getDiretorDaEscola().getCpf() == diretor.getCpf() && pedidoselecionado.getDiretorDaEscola().getNome().equals(diretor.getNome())){
-                    for(int j= 0;j<diretor.getPedidos().size();j++){
-                        if(pedidoselecionado.getTipo().equals(diretor.getPedidos().get(j).getTipo())){
-                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Pedido Realizado");
-                            //JOptionPane.showMessageDialog(null,"pedido atualizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Chamado criado com sucesso!","Menssagem",JOptionPane.PLAIN_MESSAGE);
+                listaDiretores = carregarDiretores();
+                for(int i =0;i<listaDiretores.size();i++){
+                    DiretorDaEscola diretor = listaDiretores.get(i);
+                    if(pedidoselecionado.getDiretorDaEscola().getCpf() == diretor.getCpf() && pedidoselecionado.getDiretorDaEscola().getNome().equals(diretor.getNome())){
+                        for(int j= 0;j<diretor.getPedidos().size();j++){
+                            if(pedidoselecionado.getTipo().equals(diretor.getPedidos().get(j).getTipo())){
+                                listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Pedido Realizado");
+                            }
                         }
                     }
                 }
+                atualizarPedidos(listaDiretores);
+            } catch (IOException | ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a  Criação do Chamado de Energia (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
             }
-            
-            
-            atualizarPedidos(listaDiretores);
+           
             
         }
         else if(tipoChamado.equals("Computador")){
             try {
                 entidade.criaChamadoComputador(escola);
-            } catch (IOException ex) {
-                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            JOptionPane.showMessageDialog(null,"Chamado criado com sucesso!","Menssagem",JOptionPane.PLAIN_MESSAGE);
-            listaDiretores = carregarDiretores();
-            for(int i =0;i<listaDiretores.size();i++){
-                DiretorDaEscola diretor = listaDiretores.get(i);
-                if(pedidoselecionado.getDiretorDaEscola().getCpf() == diretor.getCpf() && pedidoselecionado.getDiretorDaEscola().getNome().equals(diretor.getNome())){
-                    for(int j= 0;j<diretor.getPedidos().size();j++){
-                        if(pedidoselecionado.getTipo().equals(diretor.getPedidos().get(j).getTipo())){
-                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Pedido Realizado");
-                            
+                JOptionPane.showMessageDialog(null,"Chamado criado com sucesso!","Menssagem",JOptionPane.PLAIN_MESSAGE);
+                listaDiretores = carregarDiretores();
+                for(int i =0;i<listaDiretores.size();i++){
+                    DiretorDaEscola diretor = listaDiretores.get(i);
+                    if(pedidoselecionado.getDiretorDaEscola().getCpf() == diretor.getCpf() && pedidoselecionado.getDiretorDaEscola().getNome().equals(diretor.getNome())){
+                        for(int j= 0;j<diretor.getPedidos().size();j++){
+                            if(pedidoselecionado.getTipo().equals(diretor.getPedidos().get(j).getTipo())){
+                                listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Pedido Realizado");
+
+                            }
                         }
                     }
                 }
+                atualizarPedidos(listaDiretores);
+            } catch (IOException | ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a  Criação do Chamado de Computador (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
             }
-            
-            
-            atualizarPedidos(listaDiretores);
+          
             
         }
         else if(tipoChamado.equals("Internet")){
             try {
                 entidade.criaChamadoInternet(escola);
-            } catch (IOException ex) {
-                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(TelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            JOptionPane.showMessageDialog(null,"Chamado criado com sucesso!","Menssagem",JOptionPane.PLAIN_MESSAGE);
-            listaDiretores = carregarDiretores();
-            for(int i =0;i<listaDiretores.size();i++){
-                DiretorDaEscola diretor = listaDiretores.get(i);
-                if(pedidoselecionado.getDiretorDaEscola().getCpf() == diretor.getCpf() && pedidoselecionado.getDiretorDaEscola().getNome().equals(diretor.getNome())){
-                    for(int j= 0;j<diretor.getPedidos().size();j++){
-                        if(pedidoselecionado.getTipo().equals(diretor.getPedidos().get(j).getTipo())){
-                            listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Pedido Realizado");
-                            //JOptionPane.showMessageDialog(null,"pedido atualizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Chamado criado com sucesso!","Menssagem",JOptionPane.PLAIN_MESSAGE);
+                listaDiretores = carregarDiretores();
+                for(int i =0;i<listaDiretores.size();i++){
+                    DiretorDaEscola diretor = listaDiretores.get(i);
+                    if(pedidoselecionado.getDiretorDaEscola().getCpf() == diretor.getCpf() && pedidoselecionado.getDiretorDaEscola().getNome().equals(diretor.getNome())){
+                        for(int j= 0;j<diretor.getPedidos().size();j++){
+                            if(pedidoselecionado.getTipo().equals(diretor.getPedidos().get(j).getTipo())){
+                                listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Pedido Realizado");
+                                //JOptionPane.showMessageDialog(null,"pedido atualizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
+                            }
                         }
                     }
                 }
-            }
-            
-            
-            
-            atualizarPedidos(listaDiretores);
-            
+                atualizarPedidos(listaDiretores);
+            } catch (IOException | ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a  Criação do Chamado de Internet (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
+            }  
         }
         
         else{
@@ -398,7 +385,6 @@ public class TelaPedidos extends javax.swing.JFrame {
                 }
         }catch (IOException | ClassNotFoundException e) {
                 JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Diretores aqui (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                //this.dispose();
         }
         return this.listaDiretores;
     }

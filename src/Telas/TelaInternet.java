@@ -4,13 +4,10 @@ package Telas;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import programa.DiretorDaEscola;
-import programa.Internet;
 import programa.EntidadeDoGoverno;
 import programa.GerenciadorDeArquivos;
 import programa.Internet;
@@ -21,7 +18,7 @@ public class TelaInternet extends javax.swing.JFrame {
     private EntidadeDoGoverno entidade;
     private ArrayList<DiretorDaEscola> listaDiretores;
     private ArrayList<EntidadeDoGoverno> listaEntidade;
-    private ArrayList<Internet> listaInternet;
+    private ArrayList<Internet> listaInternet = new ArrayList<>();
     private Internet internet;
     private String e = "Internet";
     private int indice;
@@ -130,26 +127,23 @@ public class TelaInternet extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null,"O chamado de Energia foi criado","Mensagem",JOptionPane.PLAIN_MESSAGE);
                 try {
                     entidade.criaChamadoEnergia(internet.getEscola());
-                } catch (IOException ex) {
-                    Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException | ClassNotFoundException ex) {
+                    JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante o Carregamento dos Chamados de Internet (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
                 }
             }
             try {
                 listaInternet = carregarInternet();
-            } catch (IOException ex) {
-                Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            for(int i =0;i<listaInternet.size();i++){
-                Internet e = listaInternet.get(i);
-                if(internet.getEscola().getNome().equals(e.getEscola().getNome())){
-                    listaInternet.set(i, internet);
-                    atualizarInternet(listaInternet);
+                for(int i =0;i<listaInternet.size();i++){
+                    Internet e = listaInternet.get(i);
+                    if(internet.getEscola().getNome().equals(e.getEscola().getNome())){
+                        listaInternet.set(i, internet);
+                        atualizarInternet(listaInternet);
+                    }
                 }
+            } catch (IOException | ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante o Carregamento dos Chamados de Internet (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
             }
+            
         }
         else{
             JOptionPane.showMessageDialog(null,"Esse chamado já foi resolvido, vá a página de pedidos e faça um novo chamado","Mensagem",JOptionPane.PLAIN_MESSAGE);
@@ -162,7 +156,6 @@ public class TelaInternet extends javax.swing.JFrame {
                     for(int j= 0;j<diretor.getPedidos().size();j++){
                         if(e.equals(diretor.getPedidos().get(j).getTipo())){
                             listaDiretores.get(i).getPedidos().get(j).atualizacao(true, " Chamado completo");
-                            //JOptionPane.showMessageDialog(null,"pedido atualizado","Menssagem",JOptionPane.PLAIN_MESSAGE);
                         }
                     }
                 }
@@ -187,10 +180,8 @@ public class TelaInternet extends javax.swing.JFrame {
         atualizarPedidos(listaDiretores);
         try {  
             carregaTabela();
-        } catch (IOException ex) {
-            Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante o Carregamento dos Chamados de Internet (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
         }
        
     }//GEN-LAST:event_btResolverActionPerformed
@@ -206,10 +197,8 @@ public class TelaInternet extends javax.swing.JFrame {
         try {
             listaInternet = carregarInternet();
             internet = listaInternet.get(indice);
-        } catch (IOException ex) {
-            Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TelaInternet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante o Carregamento da Tabela (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
         }
 
         btResolver.setEnabled(true);
@@ -252,9 +241,8 @@ public class TelaInternet extends javax.swing.JFrame {
             if (!arquivo.isDirectory() && arquivo.exists()) {
                    gerenciadorDeArquivos.EscreverArquivo(listaInternet,arquivo);
                 }
-        }catch (IOException e) {
-                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Internet aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                //this.dispose();
+        }catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Internet aqui(" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -266,9 +254,8 @@ public class TelaInternet extends javax.swing.JFrame {
             if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
                     this.listaDiretores = gerenciadorDeArquivosDiretores.lerArquivo(arquivoDiretores);
                 }
-        }catch (IOException | ClassNotFoundException e) {
-                JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Diretores aqui (" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                //this.dispose();
+        }catch (IOException | ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(null,"Ocorreu um Erro ao abrir os arquivo de Diretores aqui (" + ex.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
         }
         return this.listaDiretores;
     }
@@ -281,9 +268,8 @@ public class TelaInternet extends javax.swing.JFrame {
             if (!arquivoDiretores.isDirectory() && arquivoDiretores.exists()) {
                    gerenciadorDeArquivosDiretores.EscreverArquivo(listaDiretores,arquivoDiretores);
                 }
-        }catch (IOException e) {
+        }catch (IOException ex) {
                 JOptionPane.showMessageDialog(null,"Ocorreu um Erro Durante a escrita do Arquivo de Diretores aqui(" + e.toString() + ")" ,"ERRO" ,JOptionPane.ERROR_MESSAGE);
-                //this.dispose();
         }
     }
     
