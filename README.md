@@ -1,6 +1,6 @@
 # Objetivo do projeto
 
-Nos  ́ultimos anos, foi possível notar a importância da tecnologia no processo da educaçãao dentro das
+Nos últimos anos, foi possível notar a importância da tecnologia no processo da educaçãao dentro das
 escolas. Ferramentas como vídeos educativos, jogos educacionais e ferramentas interativas já começaram a
 surgir como opções que escolas e professores podem trazer para auxiliar o processo educativo e se mostraram
 consideravelmente efetivas. Além disso, em luz dos eventos recentes, a abertura das escolas de forma remota durante a pandemia de COVID-19 tornou-se poss ́ıvel somente por meio da internet e das m ́ultiplas plataformas dispon ́ıveis nela (Ex. Google Classrom, Microsoft Teams, etc.). 
