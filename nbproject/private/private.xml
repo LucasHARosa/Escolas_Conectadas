@@ -4,10 +4,17 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/programa/Pedido.java</file>
+            <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/programa/Energia.java</file>
             <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/programa/EntidadeDoGoverno.java</file>
+            <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/programa/Usuario.java</file>
+            <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/Telas/TelaDetalhePedidoDiretor.java</file>
+            <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/programa/DiretorDaEscola.java</file>
             <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/programa/Internet.java</file>
+            <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/programa/Chamado.java</file>
             <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/programa/Computador.java</file>
             <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/Telas/TelaPedidos.java</file>
+            <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/programa/Escola.java</file>
+            <file>file:/C:/Users/lucas/Documents/NetBeansProjects/EscolasConectadas/src/programa/GerenciadorDeArquivos.java</file>
         </group>
     </open-files>
 </project-private>
