@@ -55,7 +55,10 @@ e a senha, tanto para o diretor como para a entidade.
 # 3. Diagrama de classe 
 Trata-se de um projeto orientado a objetos portanto temos o seguinte diagrama de classes
 
-<img src="./imagens/uml.png">
+<p align="center">
+   <img src="./imagens/uml.png" width="300px">
+</p>
+
 
 # 4. Telas
 
