@@ -1,3 +1,8 @@
+![GitHub repo size](https://img.shields.io/github/repo-size/LucasHARosa/Escolas_Conectadas)
+![GitHub language count](https://img.shields.io/github/languages/count/LucasHARosa/Escolas_Conectadas)
+![GitHub top language](https://img.shields.io/github/languages/top/LucasHARosa/Escolas_Conectadas)
+![GitHub last commit](https://img.shields.io/github/last-commit/LucasHARosa/Escolas_Conectadas)
+
 # 1. Objetivo do projeto
 
 Nos últimos anos, foi possível notar a importância da tecnologia no processo da educaçãao dentro das
